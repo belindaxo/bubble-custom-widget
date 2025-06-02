@@ -96,6 +96,7 @@ var parseMetadata = metadata => {
             return [
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
+                'showLegend', 'legendLayout', 'legendAlignment',                                            // Legend properties 
                 'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'decimalPlaces'                             // Number formatting properties
             ];
         }
@@ -223,6 +224,11 @@ var parseMetadata = metadata => {
                 },
                 exporting: {
                     enabled: false
+                },
+                legend: {
+                    enabled: this.showLegend || true,
+                    layout: this.legendLayout || 'horizontal',
+                    align: this.legendAlignment || 'center'
                 },
                 tooltip: {
                     useHTML: true,

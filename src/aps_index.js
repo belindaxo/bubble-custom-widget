@@ -107,6 +107,34 @@
                 </table>
             </tr>
         </table>
+        <legend style="font-weight: bold;font-size: 18px;"> Legend </legend>
+        <table>
+            <tr>
+                <td>
+                    <input id="showLegend" type="checkbox" checked>
+                    <label for="showLegend">Show legend</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Layout</td>
+                <td>Alignment</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="legendLayout">
+                        <option value="horizontal" selected>Horizontal</option>
+                        <option value="vertical">Vertical</option>
+
+                    </select>
+                </td>
+                <td>
+                    <select id="legendAlignment">
+                        <option value="left">Left</option>
+                        <option value="center" selected>Center</option>
+                        <option value="right">Right</option>
+                    </select>
+            </tr>
+        </table>
         <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
         <table>
             <tr>
@@ -195,6 +223,9 @@
                 subtitleFontStyle: 'normal',
                 subtitleAlignment: 'left',
                 subtitleColor: '#000000',
+                showLegend: true,
+                legendLayout: 'horizontal',
+                legendAlignment: 'center',
                 xScaleFormat: 'unformatted',
                 yScaleFormat: 'unformatted',
                 zScaleFormat: 'unformatted',
@@ -212,6 +243,9 @@
             this._shadowRoot.getElementById('subtitleFontStyle').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleColor').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('showLegend').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('legendLayout').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('legendAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('xScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('yScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('zScaleFormat').addEventListener('change', this._submit.bind(this));
@@ -257,6 +291,9 @@
                         subtitleFontStyle: this.subtitleFontStyle,
                         subtitleAlignment: this.subtitleAlignment,
                         subtitleColor: this.subtitleColor,
+                        showLegend: this.showLegend,
+                        legendLayout: this.legendLayout,
+                        legendAlignment: this.legendAlignment,
                         xScaleFormat: this.xScaleFormat,
                         yScaleFormat: this.yScaleFormat,
                         zScaleFormat: this.zScaleFormat,
@@ -346,6 +383,30 @@
 
         get subtitleColor() {
             return this._shadowRoot.getElementById('subtitleColor').value;
+        }
+
+        set showLegend(value) {
+            this._shadowRoot.getElementById('showLegend').checked = value;
+        }
+
+        get showLegend() {
+            return this._shadowRoot.getElementById('showLegend').checked;
+        }
+
+        set legendLayout(value) {
+            this._shadowRoot.getElementById('legendLayout').value = value;
+        }
+
+        get legendLayout() {
+            return this._shadowRoot.getElementById('legendLayout').value;
+        }
+
+        set legendAlignment(value) {
+            this._shadowRoot.getElementById('legendAlignment').value = value;
+        }
+
+        get legendAlignment() {
+            return this._shadowRoot.getElementById('legendAlignment').value;
         }
 
         set xScaleFormat(value) {
