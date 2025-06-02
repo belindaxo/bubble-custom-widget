@@ -183,7 +183,10 @@ var parseMetadata = metadata => {
             const series = this._processBubbleSeriesData(data, dimensions, measures);
             console.log('Processed Bubble Series Data:', series);
 
-            const subtitleText = this._updateSubtitle();
+            const scaleFormatX = (value) => this._formatValueByScale(this.xScaleFormat, value);
+            const scaleFormatY = (value) => this._formatValueByScale(this.yScaleFormat, value);
+            const scaleFormatZ = (value) => this._formatValueByScale(this.zScaleFormat, value);
+
 
             Highcharts.setOptions({
                 lang: {
@@ -212,7 +215,7 @@ var parseMetadata = metadata => {
                     }
                 },
                 subtitle: {
-                    text: subtitleText,
+                    text: this.chartSubtitle || "",
                     align: this.subtitleAlignment || "left",
                     style: {
                         fontSize: this.subtitleSize || "11px",
@@ -227,7 +230,7 @@ var parseMetadata = metadata => {
                     useHTML: true,
                     followPointer: true,
                     hideDelay: 0,
-                    formatter: this._formatTooltip(measures, dimensions, this.xScaleFormat, this.yScaleFormat, this.zScaleFormat)
+                    formatter: this._formatTooltip(measures, dimensions, scaleFormatX, scaleFormatY, scaleFormatZ)
                 },
                 yAxis: {
                     startOnTick: false,
@@ -244,33 +247,6 @@ var parseMetadata = metadata => {
                 series
             }
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
-        }
-
-        /**
-         * Determines subtitle text based on scale format or user input.
-         * @returns {string} The subtitle text.
-         */
-        _updateSubtitle() {
-            if (!this.chartSubtitle || this.chartSubtitle.trim() === '') {
-                let subtitleText = '';
-                switch (this.scaleFormat) {
-                    case 'k':
-                        subtitleText = 'in k';
-                        break;
-                    case 'm':
-                        subtitleText = 'in m';
-                        break;
-                    case 'b':
-                        subtitleText = 'in b';
-                        break;
-                    default:
-                        subtitleText = '';
-                        break;
-                }
-                return subtitleText;
-            } else {
-                return this.chartSubtitle;
-            }
         }
 
 
@@ -304,7 +280,7 @@ var parseMetadata = metadata => {
             };
         }
 
-        _formatTooltip(measures, dimensions, scaleX, scaleY, scaleZ) {
+        _formatTooltip(measures, dimensions, scaleFormatX, scaleFormatY, scaleFormatZ) {
             return function () {
                 const point = this.point;
                 const series = this.series;
@@ -313,9 +289,9 @@ var parseMetadata = metadata => {
                 const dimensionName = dimensions[0].description || "dimensions[0].description";
                 const measureNames = measures.map(m => m.label);
 
-                const scaledX = this._formatValueByScale(scaleX, this.x);
-                const scaledY = this._formatValueByScale(scaleY, this.y);
-                const scaledZ = this._formatValueByScale(scaleZ, this.z);
+                const scaledX = scaleFormatX(this.x);
+                const scaledY = scaleFormatY(this.y);
+                const scaledZ = scaleFormatZ(this.z);
 
                 const x = Highcharts.numberFormat(scaledX.scaledValue, -1, '.', ',') + ` ${scaledX.valueSuffix}`;
                 const y = Highcharts.numberFormat(scaledY.scaledValue, -1, '.', ',') + ` ${scaledY.valueSuffix}`;
