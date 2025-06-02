@@ -81,6 +81,16 @@
             "type": "string",
             "description": "The color of the subtitle text",
             "default": "#000000"
+        },
+        "scaleFormat": {
+            "type": "string",
+            "description": "The scale of the numbers (unformatted, k, m, b)",
+            "default": "unformatted"
+        },
+        "decimalPlaces": {
+            "type": "integer",
+            "description": "The number of decimal places to display",
+            "default": 2
         }
     },
     "methods": {

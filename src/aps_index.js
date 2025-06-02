@@ -107,6 +107,37 @@
                 </table>
             </tr>
         </table>
+        <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
+        <table>
+            <tr>
+                <td>Scale Format</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="scaleFormat">
+                        <option value="unformatted" selected>Unformatted</option>
+                        <option value="k">Thousands (k)</option>
+                        <option value="m">Millions (m)</option>
+                        <option value="b">Billions (b)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Decimal Places</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="decimalPlaces">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
         <tr>
             <button id="resetDefaults" type="button" style="margin-top: 10px; margin-bottom: 10px;">Reset to Default</button>
         </tr>
@@ -118,7 +149,7 @@
      * Custom Web Component for the Styling Panel (APS) of the Funnel3D widget.
      * @extends HTMLElement
      */
-    class Funnel3DAps extends HTMLElement {
+    class BubbleAps extends HTMLElement {
         /**
          * Initializes the shadow DOM and sets up event listeners for form inputs.
          */
@@ -135,7 +166,9 @@
                 subtitleSize: '11px',
                 subtitleFontStyle: 'normal',
                 subtitleAlignment: 'left',
-                subtitleColor: '#000000'
+                subtitleColor: '#000000',
+                scaleFormat: 'unformatted',
+                decimalPlaces: '2',
             };
 
             this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -149,6 +182,8 @@
             this._shadowRoot.getElementById('subtitleFontStyle').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleColor').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('scaleFormat').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('decimalPlaces').addEventListener('change', this._submit.bind(this));
 
 
             // Reset button logic
@@ -189,7 +224,9 @@
                         subtitleSize: this.subtitleSize,
                         subtitleFontStyle: this.subtitleFontStyle,
                         subtitleAlignment: this.subtitleAlignment,
-                        subtitleColor: this.subtitleColor
+                        subtitleColor: this.subtitleColor,
+                        scaleFormat: this.scaleFormat,
+                        decimalPlaces: this.decimalPlaces
                     }
                 }
             }));
@@ -277,8 +314,23 @@
             return this._shadowRoot.getElementById('subtitleColor').value;
         }
 
+        set scaleFormat(value) {
+            this._shadowRoot.getElementById('scaleFormat').value = value;
+        }
+
+        get scaleFormat() {
+            return this._shadowRoot.getElementById('scaleFormat').value;
+        }
+
+        set decimalPlaces(value) {
+            this._shadowRoot.getElementById('decimalPlaces').value = value;
+        }
+
+        get decimalPlaces() {
+            return this._shadowRoot.getElementById('decimalPlaces').value;
+        }
 
     }
-
-    customElements.define('com-sap-sample-funnel3d-aps', Funnel3DAps);
+    
+    customElements.define('com-sap-sample-bubble-aps', BubbleAps);
 })();

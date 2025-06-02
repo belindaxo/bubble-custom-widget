@@ -96,7 +96,8 @@ var parseMetadata = metadata => {
         static get observedAttributes() {
             return [
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
-                'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor'  // Subtitle properties
+                'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
+                'scaleFormat', 'decimalPlaces'                                                              // Number formatting properties
             ];
         }
 
@@ -168,6 +169,8 @@ var parseMetadata = metadata => {
 
             const { data, metadata } = dataBinding;
             const { dimensions, measures } = parseMetadata(metadata);
+            console.log('dimensions:', dimensions);
+            console.log('measures:', measures);
 
             if (measures.length < 3) {
                 if (this._chart) {
@@ -178,8 +181,10 @@ var parseMetadata = metadata => {
             }
             
             const series = this._processBubbleSeriesData(data, dimensions, measures);
+            console.log('Processed Bubble Series Data:', series);
 
             const subtitleText = this._updateSubtitle();
+            const scaleFormat = (value) => this._scaleFormat(value);
 
             Highcharts.setOptions({
                 lang: {
@@ -219,9 +224,23 @@ var parseMetadata = metadata => {
                 exporting: {
                     enabled: false
                 },
+                tooltip: {
+                    useHTML: true,
+                    followPointer: true,
+                    hideDelay: 0,
+                    formatter: this._formatTooltip(measures, dimensions, scaleFormat)
+                },
                 yAxis: {
                     startOnTick: false,
-                    endOnTick: false
+                    endOnTick: false,
+                    title: {
+                        text: measures[1].label || 'Y-Axis'
+                    }
+                },
+                xAxis: {
+                    title: {
+                        text: measures[0].label || 'X-Axis'
+                    }
                 },
                 series
             }
@@ -253,6 +272,79 @@ var parseMetadata = metadata => {
             } else {
                 return this.chartSubtitle;
             }
+        }
+
+        /**
+         * Scales a value based on the selected scale format (k, m, b).
+         * @param {number} value 
+         * @returns {Object} An object containing the scaled value and its suffix.
+         */
+        _scaleFormat(value) {
+            let scaledValue = value;
+            let valueSuffix = '';
+
+            switch (this.scaleFormat) {
+                case 'k':
+                    scaledValue = value / 1000;
+                    valueSuffix = 'k';
+                    break;
+                case 'm':
+                    scaledValue = value / 1000000;
+                    valueSuffix = 'm';
+                    break;
+                case 'b':
+                    scaledValue = value / 1000000000;
+                    valueSuffix = 'b';
+                    break;
+                default:
+                    break;
+            }
+            return {
+                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                valueSuffix
+            };
+        }
+
+        _formatTooltip(measures, dimensions, scaleFormat) {
+            return function () {
+                const point = this.point;
+                const series = this.series;
+
+                const groupLabel = point.name || "point.name";
+                const dimensionName = dimensions[0].description || "dimensions[0].description";
+                const measureNames = measures.map(m => m.label) || ["Measure 1", "Measure 2", "Measure 3"];
+
+                const scaledX = scaleFormat(point.x);
+                const scaledY = scaleFormat(point.y);
+                const scaledZ = scaleFormat(point.z);
+
+                const x = Highcharts.numberFormat(scaledX, -1, '.', ',');
+                const y = Highcharts.numberFormat(scaledY, -1, '.', ',');
+                const z = Highcharts.numberFormat(scaledZ, -1, '.', ',');
+
+                return `
+                    <div style="text-align: left; font-family: '72', sans-serif; font-size: 14px;">
+                        <div style="font-size: 12px; font-weight: normal; color: #666666;">${dimensionName}</div>
+                        <div style="font-size: 18px; font-weight: bold; color: #000000;">${groupLabel}</div>
+                        <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;">
+                        <table style="width: 100%; font-size: 14px; color: #000000;">
+                            <tr>
+                                <td style="text-align: left; padding-right: 10px;">${measureNames[0]}:</td>
+                                <td style="text-align: right; padding-left: 10px;">${x}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; padding-right: 10px;">${measureNames[1]}:</td>
+                                <td style="text-align: right; padding-left: 10px;">${y}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; padding-right: 10px;">${measureNames[2]}:</td>
+                                <td style="text-align: right; padding-left: 10px;">${z}</td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+            }
+            
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
