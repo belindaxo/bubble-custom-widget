@@ -82,9 +82,19 @@
             "description": "The color of the subtitle text",
             "default": "#000000"
         },
-        "scaleFormat": {
+        "xScaleFormat": {
             "type": "string",
-            "description": "The scale of the numbers (unformatted, k, m, b)",
+            "description": "The scale of the numbers in the x-axis (unformatted, k, m, b, percent)",
+            "default": "unformatted"
+        },
+        "yScaleFormat": {
+            "type": "string",
+            "description": "The scale of the numbers in the y-axis (unformatted, k, m, b, percent)",
+            "default": "unformatted"
+        },
+        "zScaleFormat": {
+            "type": "string",
+            "description": "The scale of the numbers in the z-axis (unformatted, k, m, b, percent)",
             "default": "unformatted"
         },
         "decimalPlaces": {

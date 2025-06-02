@@ -123,33 +123,61 @@
     <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
     <table>
         <tr>
-            <td>Scale Format</td>
+            <table>
+                <tr>Scale Format</tr>
+                <tr>
+                    <td>X-Axis</td>
+                    <td>Y-Axis</td>
+                    <td>Z-Axis</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="xScaleFormat">
+                            <option value="unformatted" selected>Unformatted</option>
+                            <option value="k">Thousands (k)</option>
+                            <option value="m">Millions (m)</option>
+                            <option value="b">Billions (b)</option>
+                            <option value="percent">Percent (%)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="yScaleFormat">
+                            <option value="unformatted" selected>Unformatted</option>
+                            <option value="k">Thousands (k)</option>
+                            <option value="m">Millions (m)</option>
+                            <option value="b">Billions (b)</option>
+                            <option value="percent">Percent (%)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="zScaleFormat">
+                            <option value="unformatted" selected>Unformatted</option>
+                            <option value="k">Thousands (k)</option>
+                            <option value="m">Millions (m)</option>
+                            <option value="b">Billions (b)</option>
+                            <option value="percent">Percent (%)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
         </tr>
-        <tr>
-            <td>
-                <select id="scaleFormat">
-                    <option value="unformatted" selected>Unformatted</option>
-                    <option value="k">Thousands (k)</option>
-                    <option value="m">Millions (m)</option>
-                    <option value="b">Billions (b)</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Decimal Places</td>
-        </tr>
-        <tr>
-            <td>
-                <select id="decimalPlaces">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2" selected>2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </td>
-        </tr>
+        <table>
+            <tr>
+                <td>Decimal Places</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="decimalPlaces">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
     </table>
     <tr>
         <button id="resetDefaults" type="button" style="margin-top: 10px; margin-bottom: 10px;">Reset to

@@ -97,7 +97,7 @@ var parseMetadata = metadata => {
             return [
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
-                'scaleFormat', 'decimalPlaces'                                                              // Number formatting properties
+                'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'decimalPlaces'                             // Number formatting properties
             ];
         }
 
@@ -227,7 +227,7 @@ var parseMetadata = metadata => {
                     useHTML: true,
                     followPointer: true,
                     hideDelay: 0,
-                    formatter: this._formatTooltip(measures, dimensions)
+                    formatter: this._formatTooltip(measures, dimensions, this.xScaleFormat, this.yScaleFormat, this.zScaleFormat)
                 },
                 yAxis: {
                     startOnTick: false,
@@ -273,19 +273,53 @@ var parseMetadata = metadata => {
             }
         }
 
-        _formatTooltip(measures, dimensions) {
+
+        _formatValueByScale(scaleType, value) {
+            let scaledValue = value;
+            let valueSuffix = '';
+
+            switch (scaleType) {
+                case 'k':
+                    scaledValue = value / 1000;
+                    valueSuffix = 'k';
+                    break;
+                case 'm':
+                    scaledValue = value / 1000000;
+                    valueSuffix = 'm';
+                    break;
+                case 'b':
+                    scaledValue = value / 1000000000;
+                    valueSuffix = 'b';
+                    break;
+                case 'percent':
+                    scaledValue = value * 100;
+                    valueSuffix = '%';
+                    break;
+                default:
+                    break;
+            }
+            return {
+                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                valueSuffix
+            };
+        }
+
+        _formatTooltip(measures, dimensions, scaleX, scaleY, scaleZ) {
             return function () {
                 const point = this.point;
                 const series = this.series;
-                console.log('Tooltip point:', point);
 
                 const groupLabel = point.name || "point.name";
                 const dimensionName = dimensions[0].description || "dimensions[0].description";
-                const measureNames = measures.map(m => m.label) || ["Measure 1", "Measure 2", "Measure 3"];
+                const measureNames = measures.map(m => m.label);
 
-                const x = Highcharts.numberFormat(this.x, -1, '.', ',');
-                const y = Highcharts.numberFormat(this.y, -1, '.', ',');
-                const z = Highcharts.numberFormat(this.z, -1, '.', ',');
+                const scaledX = this._formatValueByScale(scaleX, this.x);
+                const scaledY = this._formatValueByScale(scaleY, this.y);
+                const scaledZ = this._formatValueByScale(scaleZ, this.z);
+
+                const x = Highcharts.numberFormat(scaledX.scaledValue, -1, '.', ',') + ` ${scaledX.valueSuffix}`;
+                const y = Highcharts.numberFormat(scaledY.scaledValue, -1, '.', ',') + ` ${scaledY.valueSuffix}`;
+                const z = Highcharts.numberFormat(scaledZ.scaledValue, -1, '.', ',') + ` ${scaledZ.valueSuffix}`;
 
                 return `
                     <div style="text-align: left; font-family: '72', sans-serif; font-size: 14px;">

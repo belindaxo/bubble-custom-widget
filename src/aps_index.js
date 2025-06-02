@@ -110,33 +110,61 @@
         <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
         <table>
             <tr>
-                <td>Scale Format</td>
+                <table>
+                    <tr>Scale Format</tr>
+                    <tr>
+                        <td>X-Axis</td>
+                        <td>Y-Axis</td>
+                        <td>Z-Axis</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="xScaleFormat">
+                                <option value="unformatted" selected>Unformatted</option>
+                                <option value="k">Thousands (k)</option>
+                                <option value="m">Millions (m)</option>
+                                <option value="b">Billions (b)</option>
+                                <option value="percent">Percent (%)</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="yScaleFormat">
+                                <option value="unformatted" selected>Unformatted</option>
+                                <option value="k">Thousands (k)</option>
+                                <option value="m">Millions (m)</option>
+                                <option value="b">Billions (b)</option>
+                                <option value="percent">Percent (%)</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="zScaleFormat">
+                                <option value="unformatted" selected>Unformatted</option>
+                                <option value="k">Thousands (k)</option>
+                                <option value="m">Millions (m)</option>
+                                <option value="b">Billions (b)</option>
+                                <option value="percent">Percent (%)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             </tr>
-            <tr>
-                <td>
-                    <select id="scaleFormat">
-                        <option value="unformatted" selected>Unformatted</option>
-                        <option value="k">Thousands (k)</option>
-                        <option value="m">Millions (m)</option>
-                        <option value="b">Billions (b)</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Decimal Places</td>
-            </tr>
-            <tr>
-                <td>
-                    <select id="decimalPlaces">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2" selected>2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </td>
-            </tr>
+            <table>
+                <tr>
+                    <td>Decimal Places</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="decimalPlaces">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
         </table>
         <tr>
             <button id="resetDefaults" type="button" style="margin-top: 10px; margin-bottom: 10px;">Reset to Default</button>
@@ -167,7 +195,9 @@
                 subtitleFontStyle: 'normal',
                 subtitleAlignment: 'left',
                 subtitleColor: '#000000',
-                scaleFormat: 'unformatted',
+                xScaleFormat: 'unformatted',
+                yScaleFormat: 'unformatted',
+                zScaleFormat: 'unformatted',
                 decimalPlaces: '2',
             };
 
@@ -182,7 +212,9 @@
             this._shadowRoot.getElementById('subtitleFontStyle').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleColor').addEventListener('change', this._submit.bind(this));
-            this._shadowRoot.getElementById('scaleFormat').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('xScaleFormat').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('yScaleFormat').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('zScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('decimalPlaces').addEventListener('change', this._submit.bind(this));
 
 
@@ -314,12 +346,28 @@
             return this._shadowRoot.getElementById('subtitleColor').value;
         }
 
-        set scaleFormat(value) {
+        set xScaleFormat(value) {
             this._shadowRoot.getElementById('scaleFormat').value = value;
         }
 
-        get scaleFormat() {
+        get xScaleFormat() {
             return this._shadowRoot.getElementById('scaleFormat').value;
+        }
+
+        set yScaleFormat(value) {
+            this._shadowRoot.getElementById('yScaleFormat').value = value;
+        }
+
+        get yScaleFormat() {
+            return this._shadowRoot.getElementById('yScaleFormat').value;
+        }
+
+        set zScaleFormat(value) {
+            this._shadowRoot.getElementById('zScaleFormat').value = value;
+        }
+
+        get zScaleFormat() {
+            return this._shadowRoot.getElementById('zScaleFormat').value;
         }
 
         set decimalPlaces(value) {
