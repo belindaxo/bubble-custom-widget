@@ -348,9 +348,10 @@ var parseMetadata = metadata => {
                 const dimensionName = dimensions[0].description || "dimensions[0].description";
                 const measureNames = measures.map(m => m.label);
 
-                const { scaledValueX, valueSuffixX } = xScaleFormat(this.x);
-                const { scaledValueY, valueSuffixY } = yScaleFormat(this.y);
-                const { scaledValueZ, valueSuffixZ } = zScaleFormat(this.z);
+                const { scaledValue: scaledValueX, valueSuffix: valueSuffixX } = xScaleFormat(this.x);
+                const { scaledValue: scaledValueY, valueSuffix: valueSuffixY } = yScaleFormat(this.y);
+                const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
+
 
                 const valueX = Highcharts.numberFormat(scaledValueX, -1, '.', ',');
                 const valueY = Highcharts.numberFormat(scaledValueY, -1, '.', ',');
