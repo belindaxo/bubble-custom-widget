@@ -257,7 +257,9 @@
                         subtitleFontStyle: this.subtitleFontStyle,
                         subtitleAlignment: this.subtitleAlignment,
                         subtitleColor: this.subtitleColor,
-                        scaleFormat: this.scaleFormat,
+                        xScaleFormat: this.xScaleFormat,
+                        yScaleFormat: this.yScaleFormat,
+                        zScaleFormat: this.zScaleFormat,
                         decimalPlaces: this.decimalPlaces
                     }
                 }
@@ -347,11 +349,11 @@
         }
 
         set xScaleFormat(value) {
-            this._shadowRoot.getElementById('scaleFormat').value = value;
+            this._shadowRoot.getElementById('xScaleFormat').value = value;
         }
 
         get xScaleFormat() {
-            return this._shadowRoot.getElementById('scaleFormat').value;
+            return this._shadowRoot.getElementById('xScaleFormat').value;
         }
 
         set yScaleFormat(value) {

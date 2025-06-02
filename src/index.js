@@ -86,7 +86,6 @@ var parseMetadata = metadata => {
                 this._chart.destroy();
                 this._chart = null;
             }
-            this._selectedPoint = null; // Reset selection when chart is destroyed
         }
 
         /**
@@ -183,10 +182,9 @@ var parseMetadata = metadata => {
             const series = this._processBubbleSeriesData(data, dimensions, measures);
             console.log('Processed Bubble Series Data:', series);
 
-            const scaleFormatX = (value) => this._formatValueByScale(this.xScaleFormat, value);
-            const scaleFormatY = (value) => this._formatValueByScale(this.yScaleFormat, value);
-            const scaleFormatZ = (value) => this._formatValueByScale(this.zScaleFormat, value);
-
+            const xScaleFormat = (value) => this._xScaleFormat(value);
+            const yScaleFormat = (value) => this._yScaleFormat(value);
+            const zScaleFormat = (value) => this._zScaleFormat(value);
 
             Highcharts.setOptions({
                 lang: {
@@ -230,7 +228,7 @@ var parseMetadata = metadata => {
                     useHTML: true,
                     followPointer: true,
                     hideDelay: 0,
-                    formatter: this._formatTooltip(measures, dimensions, scaleFormatX, scaleFormatY, scaleFormatZ)
+                    formatter: this._formatTooltip(measures, dimensions, xScaleFormat, yScaleFormat, zScaleFormat)
                 },
                 yAxis: {
                     startOnTick: false,
@@ -250,11 +248,11 @@ var parseMetadata = metadata => {
         }
 
 
-        _formatValueByScale(scaleType, value) {
+        _xScaleFormat(value) {
             let scaledValue = value;
             let valueSuffix = '';
 
-            switch (scaleType) {
+            switch (this.xScaleFormat) {
                 case 'k':
                     scaledValue = value / 1000;
                     valueSuffix = 'k';
@@ -280,7 +278,68 @@ var parseMetadata = metadata => {
             };
         }
 
-        _formatTooltip(measures, dimensions, scaleFormatX, scaleFormatY, scaleFormatZ) {
+        _yScaleFormat(value) {
+            let scaledValue = value;
+            let valueSuffix = '';
+
+            switch (this.yScaleFormat) {
+                case 'k':
+                    scaledValue = value / 1000;
+                    valueSuffix = 'k';
+                    break;
+                case 'm':
+                    scaledValue = value / 1000000;
+                    valueSuffix = 'm';
+                    break;
+                case 'b':
+                    scaledValue = value / 1000000000;
+                    valueSuffix = 'b';
+                    break;
+                case 'percent':
+                    scaledValue = value * 100;
+                    valueSuffix = '%';
+                    break;
+                default:
+                    break;
+            }
+            return {
+                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                valueSuffix
+            };
+        }
+
+        _zScaleFormat(value) {
+            let scaledValue = value;
+            let valueSuffix = '';
+
+            switch (this.zScaleFormat) {
+                case 'k':
+                    scaledValue = value / 1000;
+                    valueSuffix = 'k';
+                    break;
+                case 'm':
+                    scaledValue = value / 1000000;
+                    valueSuffix = 'm';
+                    break;
+                case 'b':
+                    scaledValue = value / 1000000000;
+                    valueSuffix = 'b';
+                    break;
+                case 'percent':
+                    scaledValue = value * 100;
+                    valueSuffix = '%';
+                    break;
+                default:
+                    break;
+            }
+            return {
+                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                valueSuffix
+            };
+        }
+
+
+        _formatTooltip(measures, dimensions, xScaleFormat, yScaleFormat, zScaleFormat) {
             return function () {
                 const point = this.point;
                 const series = this.series;
@@ -289,13 +348,17 @@ var parseMetadata = metadata => {
                 const dimensionName = dimensions[0].description || "dimensions[0].description";
                 const measureNames = measures.map(m => m.label);
 
-                const scaledX = scaleFormatX(this.x);
-                const scaledY = scaleFormatY(this.y);
-                const scaledZ = scaleFormatZ(this.z);
+                const { scaledValueX, valueSuffixX } = xScaleFormat(this.x);
+                const { scaledValueY, valueSuffixY } = yScaleFormat(this.y);
+                const { scaledValueZ, valueSuffixZ } = zScaleFormat(this.z);
 
-                const x = Highcharts.numberFormat(scaledX.scaledValue, -1, '.', ',') + ` ${scaledX.valueSuffix}`;
-                const y = Highcharts.numberFormat(scaledY.scaledValue, -1, '.', ',') + ` ${scaledY.valueSuffix}`;
-                const z = Highcharts.numberFormat(scaledZ.scaledValue, -1, '.', ',') + ` ${scaledZ.valueSuffix}`;
+                const valueX = Highcharts.numberFormat(scaledValueX, -1, '.', ',');
+                const valueY = Highcharts.numberFormat(scaledValueY, -1, '.', ',');
+                const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
+
+                const valueWithSuffixX = `${valueX} ${valueSuffixX}`;
+                const valueWithSuffixY = `${valueY} ${valueSuffixY}`;
+                const valueWithSuffixZ = `${valueZ} ${valueSuffixZ}`;
 
                 return `
                     <div style="text-align: left; font-family: '72', sans-serif; font-size: 14px;">
@@ -305,15 +368,15 @@ var parseMetadata = metadata => {
                         <table style="width: 100%; font-size: 14px; color: #000000;">
                             <tr>
                                 <td style="text-align: left; padding-right: 10px;">${measureNames[0]}:</td>
-                                <td style="text-align: right; padding-left: 10px;">${x}</td>
+                                <td style="text-align: right; padding-left: 10px;">${valueWithSuffixX}</td>
                             </tr>
                             <tr>
                                 <td style="text-align: left; padding-right: 10px;">${measureNames[1]}:</td>
-                                <td style="text-align: right; padding-left: 10px;">${y}</td>
+                                <td style="text-align: right; padding-left: 10px;">${valueWithSuffixY}</td>
                             </tr>
                             <tr>
                                 <td style="text-align: left; padding-right: 10px;">${measureNames[2]}:</td>
-                                <td style="text-align: right; padding-left: 10px;">${z}</td>
+                                <td style="text-align: right; padding-left: 10px;">${valueWithSuffixZ}</td>
                             </tr>
                         </table>
                     </div>
