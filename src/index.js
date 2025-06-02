@@ -184,7 +184,6 @@ var parseMetadata = metadata => {
             console.log('Processed Bubble Series Data:', series);
 
             const subtitleText = this._updateSubtitle();
-            const scaleFormat = (value) => this._scaleFormat(value);
 
             Highcharts.setOptions({
                 lang: {
@@ -228,7 +227,7 @@ var parseMetadata = metadata => {
                     useHTML: true,
                     followPointer: true,
                     hideDelay: 0,
-                    formatter: this._formatTooltip(measures, dimensions, scaleFormat)
+                    formatter: this._formatTooltip(measures, dimensions)
                 },
                 yAxis: {
                     startOnTick: false,
@@ -274,53 +273,19 @@ var parseMetadata = metadata => {
             }
         }
 
-        /**
-         * Scales a value based on the selected scale format (k, m, b).
-         * @param {number} value 
-         * @returns {Object} An object containing the scaled value and its suffix.
-         */
-        _scaleFormat(value) {
-            let scaledValue = value;
-            let valueSuffix = '';
-
-            switch (this.scaleFormat) {
-                case 'k':
-                    scaledValue = value / 1000;
-                    valueSuffix = 'k';
-                    break;
-                case 'm':
-                    scaledValue = value / 1000000;
-                    valueSuffix = 'm';
-                    break;
-                case 'b':
-                    scaledValue = value / 1000000000;
-                    valueSuffix = 'b';
-                    break;
-                default:
-                    break;
-            }
-            return {
-                scaledValue: scaledValue.toFixed(this.decimalPlaces),
-                valueSuffix
-            };
-        }
-
-        _formatTooltip(measures, dimensions, scaleFormat) {
+        _formatTooltip(measures, dimensions) {
             return function () {
                 const point = this.point;
                 const series = this.series;
+                console.log('Tooltip point:', point);
 
                 const groupLabel = point.name || "point.name";
                 const dimensionName = dimensions[0].description || "dimensions[0].description";
                 const measureNames = measures.map(m => m.label) || ["Measure 1", "Measure 2", "Measure 3"];
 
-                const scaledX = scaleFormat(point.x);
-                const scaledY = scaleFormat(point.y);
-                const scaledZ = scaleFormat(point.z);
-
-                const x = Highcharts.numberFormat(scaledX, -1, '.', ',');
-                const y = Highcharts.numberFormat(scaledY, -1, '.', ',');
-                const z = Highcharts.numberFormat(scaledZ, -1, '.', ',');
+                const x = Highcharts.numberFormat(this.x, -1, '.', ',');
+                const y = Highcharts.numberFormat(this.y, -1, '.', ',');
+                const z = Highcharts.numberFormat(this.z, -1, '.', ',');
 
                 return `
                     <div style="text-align: left; font-family: '72', sans-serif; font-size: 14px;">
