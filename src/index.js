@@ -184,7 +184,7 @@ var parseMetadata = metadata => {
                 }
                 return;
             }
-            
+
             const series = this._processBubbleSeriesData(data, dimensions, measures);
             console.log('Processed Bubble Series Data:', series);
 
@@ -239,10 +239,29 @@ var parseMetadata = metadata => {
                             [1, fill]
                         ]
                     },
-                    lineColor: fill,
+                    lineColor: {
+                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                        stops: [
+                            [0, 'rgba(255, 255, 255, 0.5)'],
+                            [1, fill]
+                        ]
+                    },
                     states: {
                         hover: {
-                            fillColor: fill
+                            fillColor: {
+                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                                stops: [
+                                    [0, 'rgba(255, 255, 255, 0.5)'],
+                                    [1, fill]
+                                ]
+                            },
+                            lineColor: {
+                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                                stops: [
+                                    [0, 'rgba(255, 255, 255, 0.5)'],
+                                    [1, fill]
+                                ]
+                            }
                         }
                     }
                 };
