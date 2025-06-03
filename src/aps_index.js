@@ -107,6 +107,39 @@
                 </table>
             </tr>
         </table>
+        <table>
+            <tr>
+                <td>Axis Titles</td>
+            </tr>
+            <tr>
+                <table>
+                    <tr>
+                        <td>Size</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="axisTitleSize">
+                                <option value="10px">10</option>
+                                <option value="11px">11</option>
+                                <option value="12px">12</option>
+                                <option value="14px" selected>14</option>
+                                <option value="16px">16</option>
+                                <option value="18px">18</option>
+                                <option value="20px">20</option>
+                                <option value="22px">22</option>
+                                <option value="24px">24</option>
+                                <option value="32px">32</option>
+                                <option value="48px">48</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="axisTitleColor" type="color" value="#000000">
+                        </td>
+                    </tr>
+                </table>
+            </tr>
+        </table>
         <legend style="font-weight: bold;font-size: 18px;"> Legend </legend>
         <table>
             <tr>
@@ -223,6 +256,8 @@
                 subtitleFontStyle: 'normal',
                 subtitleAlignment: 'left',
                 subtitleColor: '#000000',
+                axisTitleSize: '14px',
+                axisTitleColor: '#000000',
                 showLegend: true,
                 legendLayout: 'horizontal',
                 legendAlignment: 'center',
@@ -243,6 +278,8 @@
             this._shadowRoot.getElementById('subtitleFontStyle').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('subtitleColor').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('axisTitleSize').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('axisTitleColor').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('showLegend').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendLayout').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendAlignment').addEventListener('change', this._submit.bind(this));
@@ -291,6 +328,8 @@
                         subtitleFontStyle: this.subtitleFontStyle,
                         subtitleAlignment: this.subtitleAlignment,
                         subtitleColor: this.subtitleColor,
+                        axisTitleSize: this.axisTitleSize,
+                        axisTitleColor: this.axisTitleColor,
                         showLegend: this.showLegend,
                         legendLayout: this.legendLayout,
                         legendAlignment: this.legendAlignment,
@@ -383,6 +422,22 @@
 
         get subtitleColor() {
             return this._shadowRoot.getElementById('subtitleColor').value;
+        }
+
+        set axisTitleSize(value) {
+            this._shadowRoot.getElementById('axisTitleSize').value = value;
+        }
+
+        get axisTitleSize() {
+            return this._shadowRoot.getElementById('axisTitleSize').value;
+        }
+
+        set axisTitleColor(value) {
+            this._shadowRoot.getElementById('axisTitleColor').value = value;
+        }
+
+        get axisTitleColor() {
+            return this._shadowRoot.getElementById('axisTitleColor').value;
         }
 
         set showLegend(value) {

@@ -96,6 +96,7 @@ var parseMetadata = metadata => {
             return [
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
+                'axisTitleSize', 'axisTitleColor',                                                          // Axis title properties
                 'showLegend', 'legendLayout', 'legendAlignment',                                            // Legend properties 
                 'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'decimalPlaces'                             // Number formatting properties
             ];
@@ -263,12 +264,20 @@ var parseMetadata = metadata => {
                     startOnTick: false,
                     endOnTick: false,
                     title: {
-                        text: measures[1].label || 'Y-Axis'
+                        text: measures[1].label || 'Y-Axis',
+                        style: {
+                            fontSize: this.axisTitleSize || '14px',
+                            color: this.axisTitleColor || '#000000'
+                        }
                     }
                 },
                 xAxis: {
                     title: {
-                        text: measures[0].label || 'X-Axis'
+                        text: measures[0].label || 'X-Axis',
+                        style: {
+                            fontSize: this.axisTitleSize || '14px',
+                            color: this.axisTitleColor || '#000000'
+                        }
                     }
                 },
                 series
@@ -412,7 +421,6 @@ var parseMetadata = metadata => {
                     </div>
                 `;
             }
-            
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
