@@ -274,8 +274,7 @@ var parseMetadata = metadata => {
                             fontSize: this.axisTitleSize || '14px',
                             color: this.axisTitleColor || '#000000'
                         }
-                    },
-                    min: 0
+                    }
                 },
                 xAxis: {
                     title: {
@@ -286,8 +285,7 @@ var parseMetadata = metadata => {
                             color: this.axisTitleColor || '#000000'
                         }
                     },
-                    tickWidth: 0,
-                    min: 0
+                    tickWidth: 0
                 },
                 series
             }
