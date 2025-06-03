@@ -1,6 +1,7 @@
 /**
  * Module dependencies for Highcharts 3D Funnel chart.
  */
+import { min } from 'd3';
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
@@ -265,20 +266,25 @@ var parseMetadata = metadata => {
                     endOnTick: false,
                     title: {
                         text: measures[1].label || 'Y-Axis',
+                        margin: 20,
                         style: {
                             fontSize: this.axisTitleSize || '14px',
                             color: this.axisTitleColor || '#000000'
                         }
-                    }
+                    },
+                    min: 0
                 },
                 xAxis: {
                     title: {
                         text: measures[0].label || 'X-Axis',
+                        margin: 20,
                         style: {
                             fontSize: this.axisTitleSize || '14px',
                             color: this.axisTitleColor || '#000000'
                         }
-                    }
+                    },
+                    tickWidth: 0,
+                    min: 0
                 },
                 series
             }
