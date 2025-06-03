@@ -107,6 +107,11 @@
             "description": "The alignment of the legend",
             "default": "center"
         },
+        "legendVerticalAlignment": {
+            "type": "string",
+            "description": "The vertical alignment of the legend",
+            "default": "bottom"
+        },
         "xScaleFormat": {
             "type": "string",
             "description": "The scale of the numbers in the x-axis (unformatted, k, m, b, percent)",

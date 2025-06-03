@@ -148,25 +148,36 @@
                     <label for="showLegend">Show legend</label>
                 </td>
             </tr>
-            <tr>
-                <td>Layout</td>
-                <td>Alignment</td>
-            </tr>
-            <tr>
-                <td>
-                    <select id="legendLayout">
-                        <option value="horizontal" selected>Horizontal</option>
-                        <option value="vertical">Vertical</option>
+            <table>
+                <tr>
+                    <td>Layout</td>
+                    <td>Alignment</td>
+                    <td>Vertical Alignment</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="legendLayout">
+                            <option value="horizontal" selected>Horizontal</option>
+                            <option value="vertical">Vertical</option>
 
-                    </select>
-                </td>
-                <td>
-                    <select id="legendAlignment">
-                        <option value="left">Left</option>
-                        <option value="center" selected>Center</option>
-                        <option value="right">Right</option>
-                    </select>
-            </tr>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="legendAlignment">
+                            <option value="left">Left</option>
+                            <option value="center" selected>Center</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="legendVerticalAlignment">
+                            <option value="top">Top</option>
+                            <option value="middle">Middle</option>
+                            <option value="bottom" selected>Bottom</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
         </table>
         <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
         <table>
@@ -261,6 +272,7 @@
                 showLegend: true,
                 legendLayout: 'horizontal',
                 legendAlignment: 'center',
+                legendVerticalAlignment: 'bottom',
                 xScaleFormat: 'unformatted',
                 yScaleFormat: 'unformatted',
                 zScaleFormat: 'unformatted',
@@ -283,6 +295,7 @@
             this._shadowRoot.getElementById('showLegend').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendLayout').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendAlignment').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('legendVerticalAlignment').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('xScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('yScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('zScaleFormat').addEventListener('change', this._submit.bind(this));
@@ -333,6 +346,7 @@
                         showLegend: this.showLegend,
                         legendLayout: this.legendLayout,
                         legendAlignment: this.legendAlignment,
+                        legendVerticalAlignment: this.legendVerticalAlignment,
                         xScaleFormat: this.xScaleFormat,
                         yScaleFormat: this.yScaleFormat,
                         zScaleFormat: this.zScaleFormat,
@@ -462,6 +476,14 @@
 
         get legendAlignment() {
             return this._shadowRoot.getElementById('legendAlignment').value;
+        }
+
+        set legendVerticalAlignment(value) {
+            this._shadowRoot.getElementById('legendVerticalAlignment').value = value;
+        }
+
+        get legendVerticalAlignment() {
+            return this._shadowRoot.getElementById('legendVerticalAlignment').value;
         }
 
         set xScaleFormat(value) {

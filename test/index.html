@@ -152,25 +152,35 @@
                         <label for="showLegend">Show legend</label>
                     </td>
                 </tr>
-                <tr>
-                    <td>Layout</td>
-                    <td>Alignment</td>
-                </tr>
-                <tr>
-                    <td>
-                        <select id="legendLayout">
-                            <option value="horizontal" selected>Horizontal</option>
-                            <option value="vertical">Vertical</option>
-
-                        </select>
-                    </td>
-                    <td>
-                        <select id="legendAlignment">
-                            <option value="left">Left</option>
-                            <option value="center" selected>Center</option>
-                            <option value="right">Right</option>
-                        </select>
-                </tr>
+                <table>
+                    <tr>
+                        <td>Layout</td>
+                        <td>Alignment</td>
+                        <td>Vertical Alignment</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="legendLayout">
+                                <option value="horizontal" selected>Horizontal</option>
+                                <option value="vertical">Vertical</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="legendAlignment">
+                                <option value="left">Left</option>
+                                <option value="center" selected>Center</option>
+                                <option value="right">Right</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="legendVerticalAlignment">
+                                <option value="top">Top</option>
+                                <option value="middle">Middle</option>
+                                <option value="bottom" selected>Bottom</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             </table>
             <legend style="font-weight: bold;font-size: 18px;"> Number Formatting </legend>
             <table>
@@ -227,6 +237,14 @@
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </select>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <input id="startAtOrigin" type="checkbox">
+                            <label for="startAtOrigin">Start at origin (0, 0)</label>
                         </td>
                     </tr>
                 </table>

@@ -98,7 +98,7 @@ var parseMetadata = metadata => {
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
                 'axisTitleSize', 'axisTitleColor',                                                          // Axis title properties
-                'showLegend', 'legendLayout', 'legendAlignment',                                            // Legend properties 
+                'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                 // Legend properties 
                 'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'decimalPlaces'                             // Number formatting properties
             ];
         }
@@ -193,7 +193,7 @@ var parseMetadata = metadata => {
                 lang: {
                     thousandsSep: ','
                 },
-                colors: ['#004b8d', '#47a5dc', '#faa834', '#00aa7e', '#006ac7', '#bf8028', '#00e4a7']
+                colors: ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#006ac7', '#ccced2', '#bf8028', '#00e4a7']
             });
 
             const gradientFillColors = [
@@ -203,7 +203,9 @@ var parseMetadata = metadata => {
                 Highcharts.getOptions().colors[3],
                 Highcharts.getOptions().colors[4],
                 Highcharts.getOptions().colors[5],
-                Highcharts.getOptions().colors[6]
+                Highcharts.getOptions().colors[6],
+                Highcharts.getOptions().colors[7],
+                Highcharts.getOptions().colors[8]
             ];
 
             // Apply gradient fill colors to series
@@ -253,7 +255,8 @@ var parseMetadata = metadata => {
                 legend: {
                     enabled: this.showLegend || true,
                     layout: this.legendLayout || 'horizontal',
-                    align: this.legendAlignment || 'center'
+                    align: this.legendAlignment || 'center',
+                    verticalAlign: this.legendVerticalAlignment || 'bottom'
                 },
                 tooltip: {
                     useHTML: true,
