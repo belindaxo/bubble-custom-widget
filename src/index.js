@@ -95,11 +95,11 @@ var parseMetadata = metadata => {
          */
         static get observedAttributes() {
             return [
-                'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                // Title properties
-                'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor', // Subtitle properties
-                'axisTitleSize', 'axisTitleColor',                                                          // Axis title properties
-                'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                 // Legend properties 
-                'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'decimalPlaces'                             // Number formatting properties
+                'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                            // Title properties
+                'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor',             // Subtitle properties
+                'axisTitleSize', 'axisTitleColor',                                                                      // Axis title properties
+                'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                             // Legend properties 
+                'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'xDecimalPlaces', 'yDecimalPlaces', 'zDecimalPlaces'    // Number formatting properties
             ];
         }
 
@@ -318,7 +318,7 @@ var parseMetadata = metadata => {
                     break;
             }
             return {
-                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                scaledValue: scaledValue.toFixed(this.xDecimalPlaces),
                 valueSuffix
             };
         }
@@ -348,7 +348,7 @@ var parseMetadata = metadata => {
                     break;
             }
             return {
-                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                scaledValue: scaledValue.toFixed(this.yDecimalPlaces),
                 valueSuffix
             };
         }
@@ -378,7 +378,7 @@ var parseMetadata = metadata => {
                     break;
             }
             return {
-                scaledValue: scaledValue.toFixed(this.decimalPlaces),
+                scaledValue: scaledValue.toFixed(this.zDecimalPlaces),
                 valueSuffix
             };
         }

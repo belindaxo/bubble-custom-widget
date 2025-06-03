@@ -220,13 +220,38 @@
                     </tr>
                 </table>
             </tr>
+            <tr>
+                <td>Decimal Places</td>
+            </tr>
             <table>
                 <tr>
-                    <td>Decimal Places</td>
+                    <td>X-Axis</td>
+                    <td>Y-Axis</td>
+                    <td>Z-Axis</td>
                 </tr>
                 <tr>
                     <td>
-                        <select id="decimalPlaces">
+                        <select id="xDecimalPlaces">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="yDecimalPlaces">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="zDecimalPlaces">
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2" selected>2</option>
@@ -276,7 +301,9 @@
                 xScaleFormat: 'unformatted',
                 yScaleFormat: 'unformatted',
                 zScaleFormat: 'unformatted',
-                decimalPlaces: '2',
+                xDecimalPlaces: 2,
+                yDecimalPlaces: 2,
+                zDecimalPlaces: 2
             };
 
             this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -299,7 +326,9 @@
             this._shadowRoot.getElementById('xScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('yScaleFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('zScaleFormat').addEventListener('change', this._submit.bind(this));
-            this._shadowRoot.getElementById('decimalPlaces').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('xDecimalPlaces').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('yDecimalPlaces').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('zDecimalPlaces').addEventListener('change', this._submit.bind(this));
 
 
             // Reset button logic
@@ -350,7 +379,9 @@
                         xScaleFormat: this.xScaleFormat,
                         yScaleFormat: this.yScaleFormat,
                         zScaleFormat: this.zScaleFormat,
-                        decimalPlaces: this.decimalPlaces
+                        xDecimalPlaces: this.xDecimalPlaces,
+                        yDecimalPlaces: this.yDecimalPlaces,
+                        zDecimalPlaces: this.zDecimalPlaces
                     }
                 }
             }));
@@ -510,12 +541,28 @@
             return this._shadowRoot.getElementById('zScaleFormat').value;
         }
 
-        set decimalPlaces(value) {
-            this._shadowRoot.getElementById('decimalPlaces').value = value;
+        set xDecimalPlaces(value) {
+            this._shadowRoot.getElementById('xDecimalPlaces').value = value;
         }
 
-        get decimalPlaces() {
-            return this._shadowRoot.getElementById('decimalPlaces').value;
+        get xDecimalPlaces() {
+            return this._shadowRoot.getElementById('xDecimalPlaces').value;
+        }
+
+        set yDecimalPlaces(value) {
+            this._shadowRoot.getElementById('yDecimalPlaces').value = value;
+        }
+
+        get yDecimalPlaces() {
+            return this._shadowRoot.getElementById('yDecimalPlaces').value;
+        }
+
+        set zDecimalPlaces(value) {
+            this._shadowRoot.getElementById('zDecimalPlaces').value = value;
+        }
+
+        get zDecimalPlaces() {
+            return this._shadowRoot.getElementById('zDecimalPlaces').value;
         }
 
     }

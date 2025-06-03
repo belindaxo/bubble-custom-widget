@@ -127,9 +127,19 @@
             "description": "The scale of the numbers in the z-axis (unformatted, k, m, b, percent)",
             "default": "unformatted"
         },
-        "decimalPlaces": {
+        "xDecimalPlaces": {
             "type": "integer",
-            "description": "The number of decimal places to display",
+            "description": "The number of decimal places to display for the x-axis",
+            "default": 2
+        },
+        "yDecimalPlaces": {
+            "type": "integer",
+            "description": "The number of decimal places to display for the y-axis",
+            "default": 2
+        },
+        "zDecimalPlaces": {
+            "type": "integer",
+            "description": "The number of decimal places to display for the z-axis",
             "default": 2
         }
     },
