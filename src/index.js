@@ -215,7 +215,7 @@ var parseMetadata = metadata => {
                         radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                         stops: [
                             [0, 'rgba(255, 255, 255, 0.5)'],
-                            [1, Highcharts.color(gradientFillColors[i % gradientFillColors.length]).setOpacity(0.8).get('rgba')]
+                            [1, Highcharts.color(gradientFillColors[i % gradientFillColors.length]).setOpacity(0.95).get('rgba')]
                         ]
                     }
                 };
