@@ -229,7 +229,7 @@ var parseMetadata = metadata => {
             series.forEach((s, i) => {
                 const customColor = customColors.find(c => c.category === s.name)?.color;
                 const baseColor = customColor || gradientFillColors[i % gradientFillColors.length];
-                const fill = Highcharts.Color(baseColor).setOpacity(0.95).get('rgba');
+                const fill = Highcharts.color(baseColor).setOpacity(0.95).get('rgba');
 
                 s.marker = {
                     fillColor: {
