@@ -274,6 +274,9 @@ var parseMetadata = metadata => {
                             fontSize: this.axisTitleSize || '14px',
                             color: this.axisTitleColor || '#000000'
                         }
+                    },
+                    labels: {
+                        formatter: this._formatYLabels(yScaleFormat)
                     }
                 },
                 xAxis: {
@@ -285,7 +288,10 @@ var parseMetadata = metadata => {
                             color: this.axisTitleColor || '#000000'
                         }
                     },
-                    tickWidth: 0
+                    tickWidth: 0,
+                    labels: {
+                        formatter: this._formatXLabels(xScaleFormat)
+                    }
                 },
                 series
             }
@@ -443,6 +449,30 @@ var parseMetadata = metadata => {
                     </div>
                 `;
             }
+        }
+
+        /**
+         * 
+         * @param {Function} xScaleFormat - A function that formats x-axis values.
+         * @returns {Function} A formatter function for x-axis labels.
+         */
+        _formatXLabels(xScaleFormat) {
+            return function () {
+                const { scaledValue, valueSuffix } = xScaleFormat(this.value);
+                return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+            };
+        }
+
+        /**
+         * 
+         * @param {Function} yScaleFormat - A function that formats y-axis values.
+         * @returns {Function} A formatter function for y-axis labels.
+         */
+        _formatYLabels(yScaleFormat) {
+            return function () {
+                const { scaledValue, valueSuffix } = yScaleFormat(this.value);
+                return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+            };
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
