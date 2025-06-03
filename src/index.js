@@ -238,7 +238,8 @@ var parseMetadata = metadata => {
                             [0, 'rgba(255, 255, 255, 0.5)'],
                             [1, fill]
                         ]
-                    }
+                    },
+                    lineColor: fill
                 };
             });
 
