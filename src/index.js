@@ -364,7 +364,7 @@ var parseMetadata = metadata => {
         }
 
         /**
-         * Scales the -axis value based on the selected scale format (k, m, b, percent).
+         * Scales the z-axis value based on the selected scale format (k, m, b, percent).
          * @param {number} value 
          * @returns {Object} An object containing the scaled value and its suffix.
          */

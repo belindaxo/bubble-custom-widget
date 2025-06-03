@@ -301,9 +301,9 @@
                 xScaleFormat: 'unformatted',
                 yScaleFormat: 'unformatted',
                 zScaleFormat: 'unformatted',
-                xDecimalPlaces: 2,
-                yDecimalPlaces: 2,
-                zDecimalPlaces: 2
+                xDecimalPlaces: '2',
+                yDecimalPlaces: '2',
+                zDecimalPlaces: '2'
             };
 
             this._shadowRoot = this.attachShadow({ mode: 'open' });
