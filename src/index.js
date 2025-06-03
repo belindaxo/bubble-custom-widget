@@ -239,13 +239,7 @@ var parseMetadata = metadata => {
                             [1, fill]
                         ]
                     },
-                    lineColor: {
-                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                        stops: [
-                            [0, 'rgba(255, 255, 255, 0.5)'],
-                            [1, fill]
-                        ]
-                    },
+                    lineColor: fill,
                     states: {
                         hover: {
                             fillColor: {
@@ -255,12 +249,16 @@ var parseMetadata = metadata => {
                                     [1, fill]
                                 ]
                             },
-                            lineColor: {
-                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                                stops: [
-                                    [0, 'rgba(255, 255, 255, 0.5)'],
-                                    [1, fill]
-                                ]
+                            lineColor: fill
+                        }
+                    }
+                };
+
+                s.states = {
+                    hover: {
+                        halo: {
+                            attributes: {
+                                fill: fill
                             }
                         }
                     }
