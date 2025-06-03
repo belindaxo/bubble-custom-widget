@@ -293,6 +293,11 @@ var parseMetadata = metadata => {
         }
 
 
+        /**
+         * Scales the x-axis value based on the selected scale format (k, m, b, percent).
+         * @param {number} value 
+         * @returns {Object} An object containing the scaled value and its suffix.
+         */
         _xScaleFormat(value) {
             let scaledValue = value;
             let valueSuffix = '';
@@ -323,6 +328,11 @@ var parseMetadata = metadata => {
             };
         }
 
+        /**
+         * Scales the y-axis value based on the selected scale format (k, m, b, percent).
+         * @param {number} value 
+         * @returns {Object} An object containing the scaled value and its suffix.
+         */
         _yScaleFormat(value) {
             let scaledValue = value;
             let valueSuffix = '';
@@ -353,6 +363,11 @@ var parseMetadata = metadata => {
             };
         }
 
+        /**
+         * Scales the -axis value based on the selected scale format (k, m, b, percent).
+         * @param {number} value 
+         * @returns {Object} An object containing the scaled value and its suffix.
+         */
         _zScaleFormat(value) {
             let scaledValue = value;
             let valueSuffix = '';
