@@ -242,8 +242,7 @@ var parseMetadata = metadata => {
                     lineColor: fill,
                     states: {
                         hover: {
-                            fillColor: fill,
-                            lineColor: fill
+                            fillColor: fill
                         }
                     }
                 };
