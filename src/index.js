@@ -194,6 +194,29 @@ var parseMetadata = metadata => {
                 colors: ['#004b8d', '#47a5dc', '#faa834', '#00aa7e', '#006ac7', '#bf8028', '#00e4a7']
             });
 
+            const gradientFillColors = [
+                Highcharts.getOptions().colors[0],
+                Highcharts.getOptions().colors[1],
+                Highcharts.getOptions().colors[2],
+                Highcharts.getOptions().colors[3],
+                Highcharts.getOptions().colors[4],
+                Highcharts.getOptions().colors[5],
+                Highcharts.getOptions().colors[6]
+            ];
+
+            // Apply gradient fill colors to series
+            series.forEach((s, i) => {
+                s.marker = {
+                    fillColor: {
+                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                        stops: [
+                            [0, 'rgba(255, 255, 255, 0.5)'],
+                            [1, Highcharts.color(gradientFillColors[i % gradientFillColors.length]).setOpacity(0.8).get('rgba')]
+                        ]
+                    }
+                };
+            });
+
             const chartOptions = {
                 chart: {
                     type: 'bubble',
