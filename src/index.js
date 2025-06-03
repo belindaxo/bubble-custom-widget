@@ -459,7 +459,11 @@ var parseMetadata = metadata => {
         _formatXLabels(xScaleFormat) {
             return function () {
                 const { scaledValue, valueSuffix } = xScaleFormat(this.value);
-                return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+                if (valueSuffix === '%') {
+                    return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')}${valueSuffix}`;
+                } else {
+                    return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+                }
             };
         }
 
@@ -471,7 +475,11 @@ var parseMetadata = metadata => {
         _formatYLabels(yScaleFormat) {
             return function () {
                 const { scaledValue, valueSuffix } = yScaleFormat(this.value);
-                return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+                if (valueSuffix === '%') {
+                    return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')}${valueSuffix}`;
+                } else {
+                    return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
+                }
             };
         }
     }
