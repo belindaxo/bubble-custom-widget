@@ -239,7 +239,13 @@ var parseMetadata = metadata => {
                             [1, fill]
                         ]
                     },
-                    lineColor: fill
+                    lineColor: fill,
+                    states: {
+                        hover: {
+                            fillColor: fill,
+                            lineColor: fill
+                        }
+                    }
                 };
             });
 
