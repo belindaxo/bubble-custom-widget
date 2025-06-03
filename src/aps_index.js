@@ -266,6 +266,13 @@
         <tr>
             <button id="resetDefaults" type="button" style="margin-top: 10px; margin-bottom: 10px;">Reset to Default</button>
         </tr>
+        <legend style="font-weight: bold;font-size: 18px;">Color Settings</legend>
+        <table>
+            <div id="categoryColorGrid" style="margin-top: 8px;"></div>
+            <tr>
+                <td><button type="button" id="resetColors">Reset Colors</button></td>
+            </tr>
+        </table>
         <input type="submit" style="display:none;">
         </form>
     `; 
@@ -308,6 +315,66 @@
 
             this._shadowRoot = this.attachShadow({ mode: 'open' });
             this._shadowRoot.appendChild(template.content.cloneNode(true));
+
+            // Initialize internal state
+            this.customColors = [];
+
+            // Dynamic list container for category color controls
+            const colorGridContainer = this._shadowRoot.getElementById('categoryColorGrid');
+
+            // Function to render category-based color pickers
+            const renderCategoryColorGrid = () => {
+                colorGridContainer.innerHTML = '';
+                this.validCategoryNames.forEach(categoryName => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.display = 'flex';
+                    wrapper.style.alignItems = 'center';
+                    wrapper.style.marginBottom = '6px';
+
+                    const label = document.createElement('span');
+                    label.textContent = categoryName;
+                    label.style.width = '140px';
+
+                    const input = document.createElement('input');
+                    input.type = 'color';
+                    input.style.marginLeft = '8px';
+
+                    const currentColor = this.customColors.find(c => c.category === categoryName)?.color;
+                    input.value = currentColor || '#ffffff';
+
+                    input.addEventListener('input', () => {
+                        const existing = this.customColors.find(c => c.category === categoryName);
+                        const updatedColor = input.value;
+
+                        if (existing) {
+                            if (updatedColor === '#ffffff') {
+                                this.customColors = this.customColors.filter(c => c.category !== categoryName);
+                            } else {
+                                existing.color = updatedColor;
+                                this.customColors = [...this.customColors]; // force reactivity
+                            }
+                        } else if (updatedColor !== '#ffffff') {
+                            this.customColors = [...this.customColors, { category: categoryName, color: updatedColor }];
+                        }
+
+                        this._submit(new Event('submit'));
+                    });
+
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(input);
+                    colorGridContainer.appendChild(wrapper);
+                });
+            };
+
+            const resetColorsButton = this._shadowRoot.getElementById('resetColors');
+            resetColorsButton.addEventListener('click', () => {
+                this.customColors = []; // Clear the array
+                renderCategoryColorGrid(); // Update the UI
+                this._submit(new Event('submit')); // Push to SAC to re-render chart
+                console.log("Custom colors reset.");
+            });
+
+
             this._shadowRoot.getElementById('form').addEventListener('submit', this._submit.bind(this));
             this._shadowRoot.getElementById('titleSize').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('titleFontStyle').addEventListener('change', this._submit.bind(this));

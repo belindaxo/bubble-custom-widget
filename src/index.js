@@ -60,6 +60,8 @@ var parseMetadata = metadata => {
             this.shadowRoot.innerHTML = `
                 <div id="container"></div>    
             `;
+
+            this._lastSentCategories = [];
         }
 
         /**
@@ -99,7 +101,8 @@ var parseMetadata = metadata => {
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor',             // Subtitle properties
                 'axisTitleSize', 'axisTitleColor',                                                                      // Axis title properties
                 'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                             // Legend properties 
-                'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'xDecimalPlaces', 'yDecimalPlaces', 'zDecimalPlaces'    // Number formatting properties
+                'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'xDecimalPlaces', 'yDecimalPlaces', 'zDecimalPlaces',   // Number formatting properties
+                'customColors'
             ];
         }
 
@@ -185,6 +188,18 @@ var parseMetadata = metadata => {
             const series = this._processBubbleSeriesData(data, dimensions, measures);
             console.log('Processed Bubble Series Data:', series);
 
+            const validCategoryNames = series.map(s => s.name) || [];
+            if (JSON.stringify(this._lastSentCategories) !== JSON.stringify(validCategoryNames)) {
+                this._lastSentCategories = validCategoryNames;
+                this.dispatchEvent(new CustomEvent('propertiesChanged', {
+                    detail: {
+                        properties: {
+                            validCategoryNames
+                        }
+                    }
+                }));
+            }
+
             const xScaleFormat = (value) => this._xScaleFormat(value);
             const yScaleFormat = (value) => this._yScaleFormat(value);
             const zScaleFormat = (value) => this._zScaleFormat(value);
@@ -208,14 +223,20 @@ var parseMetadata = metadata => {
                 Highcharts.getOptions().colors[8]
             ];
 
+            const customColors = this.customColors || [];
+
             // Apply gradient fill colors to series
             series.forEach((s, i) => {
+                const customColor = customColors.find(c => c.category === s.name)?.color;
+                const baseColor = customColor || gradientFillColors[i % gradientFillColors.length];
+                const fill = Highcharts.Color(baseColor).setOpacity(0.95).get('rgba');
+
                 s.marker = {
                     fillColor: {
                         radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                         stops: [
                             [0, 'rgba(255, 255, 255, 0.5)'],
-                            [1, Highcharts.color(gradientFillColors[i % gradientFillColors.length]).setOpacity(0.95).get('rgba')]
+                            [1, fill]
                         ]
                     }
                 };
