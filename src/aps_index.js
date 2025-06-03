@@ -416,6 +416,9 @@
                 }
                 this._submit(new Event('submit')); // Trigger submit event to update properties
             });
+
+            this._renderCategoryColorGrid = renderCategoryColorGrid; // Store the function for later use
+            renderCategoryColorGrid(); // Initial render of the category color grid
         }
 
         /**
@@ -448,7 +451,9 @@
                         zScaleFormat: this.zScaleFormat,
                         xDecimalPlaces: this.xDecimalPlaces,
                         yDecimalPlaces: this.yDecimalPlaces,
-                        zDecimalPlaces: this.zDecimalPlaces
+                        zDecimalPlaces: this.zDecimalPlaces,
+                        customColors: this.customColors,
+                        validCategoryNames: this.validCategoryNames
                     }
                 }
             }));
@@ -630,6 +635,23 @@
 
         get zDecimalPlaces() {
             return this._shadowRoot.getElementById('zDecimalPlaces').value;
+        }
+
+        get customColors() {
+            return this._customColors || [];
+        }
+
+        set customColors(value) {
+            this._customColors = value || [];
+        }
+
+        set validCategoryNames(value) {
+            this._validCategoryNames = value || [];
+            this._renderCategoryColorGrid(); // rebuild UI on update
+        }
+
+        get validCategoryNames() {
+            return this._validCategoryNames || [];
         }
 
     }
