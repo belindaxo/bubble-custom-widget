@@ -1,7 +1,6 @@
 /**
  * Module dependencies for Highcharts 3D Funnel chart.
  */
-import { min } from 'd3';
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
@@ -62,6 +61,8 @@ var parseMetadata = metadata => {
             `;
 
             this._lastSentCategories = [];
+
+            this._selectedPoint = null;
         }
 
         /**
@@ -89,6 +90,7 @@ var parseMetadata = metadata => {
                 this._chart.destroy();
                 this._chart = null;
             }
+            this._selectedPoint = null;
         }
 
         /**
@@ -169,6 +171,11 @@ var parseMetadata = metadata => {
         _renderChart() {
             const dataBinding = this.dataBinding;
             if (!dataBinding || dataBinding.state !== 'success') {
+                if (this._chart) {
+                    this._chart.destroy();
+                    this._chart = null;
+                    this._selectedPoint = null;
+                }
                 return;
             }
 
@@ -181,6 +188,7 @@ var parseMetadata = metadata => {
                 if (this._chart) {
                     this._chart.destroy();
                     this._chart = null;
+                    this._selectedPoint = null;
                 }
                 return;
             }
@@ -203,6 +211,8 @@ var parseMetadata = metadata => {
             const xScaleFormat = (value) => this._xScaleFormat(value);
             const yScaleFormat = (value) => this._yScaleFormat(value);
             const zScaleFormat = (value) => this._zScaleFormat(value);
+
+            const handlePointClick = (event) => this._handlePointClick(event, dataBinding, dimensions);
 
             Highcharts.setOptions({
                 lang: {
@@ -307,6 +317,18 @@ var parseMetadata = metadata => {
                     followPointer: true,
                     hideDelay: 0,
                     formatter: this._formatTooltip(measures, dimensions, xScaleFormat, yScaleFormat, zScaleFormat)
+                },
+                plotOptions: {
+                    series: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                select: handlePointClick,
+                                unselect: handlePointClick
+                            }
+                        }
+                    }
                 },
                 yAxis: {
                     startOnTick: false,
@@ -525,6 +547,47 @@ var parseMetadata = metadata => {
                     return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
                 }
             };
+        }
+
+        _handlePointClick(event, dataBinding, dimensions) {
+            const point = event.target;
+            if (!point) {
+                console.error('Point is undefined');
+                return;
+            }
+            console.log('Point:', point);
+
+            const dimension = dimensions[0];
+            const dimensionKey = dimension.key;
+            const dimensionId = dimension.id;
+            const label = point.name || 'No Label';
+            console.log('Dimension Key:', dimensionKey);
+            console.log('Dimension ID:', dimensionId);
+            console.log('Label:', label);
+
+            const selectedItem = dataBinding.data.find(
+                (item) => item[dimensionKey].label === label
+            );
+
+            const linkedAnalysis = this.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
+
+            if (this._selectedPoint && this._selectedPoint !== point) {
+                linkedAnalysis.removeFilters();
+                this._selectedPoint.select(false, false);
+                this._selectedPoint = null;
+            }
+            
+            if (event.type === 'select') {
+                if (selectedItem) {
+                    const selection = {};
+                    selection[dimensionId] = selectedItem[dimensionKey].id;
+                    linkedAnalysis.setFilters(selection);
+                    this._selectedPoint = point;
+                }
+            } else if (event.type === 'unselect') {
+                linkedAnalysis.removeFilters();
+                this._selectedPoint = null;
+            }
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
