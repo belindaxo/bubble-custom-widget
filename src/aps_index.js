@@ -646,11 +646,16 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
 
         set customColors(value) {
             this._customColors = value || [];
+            if (this._renderCategoryColorGrid && this._validCategoryNames) {
+                this._renderCategoryColorGrid(); // rebuild UI on update
+            }
         }
 
         set validCategoryNames(value) {
             this._validCategoryNames = value || [];
-            this._renderCategoryColorGrid(); // rebuild UI on update
+            if (this._renderCategoryColorGrid && this._customColors) {
+                this._renderCategoryColorGrid(); // rebuild UI on update
+            }
         }
 
         get validCategoryNames() {
@@ -658,6 +663,5 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
         }
 
     }
-    
     customElements.define('com-sap-sample-bubble-aps', BubbleAps);
 })();
