@@ -349,10 +349,7 @@ var parseMetadata = metadata => {
                     enabled: true,
                     buttons: {
                         contextButton: {
-                            symbol: 'contextButton',
-                            menuItems: ['resetFilters'],
-                            x: 8,
-                            y: -9
+                            enabled: false,
                         }
                     },
                     menuItemDefinitions: {
@@ -430,6 +427,42 @@ var parseMetadata = metadata => {
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
 
             this._adjustLegendPosition();
+
+            const container = this.shadowRoot.getElementById('container');
+
+            container.addEventListener("mouseenter", () => {
+                this._chart.update(
+                    {
+                        exporting: {
+                            buttons: {
+                                contextButton: {
+                                    enabled: true,
+                                    symbol: 'contextButton',
+                                    menuItems: ['resetFilters'],
+                                    x: 8,
+                                    y: -9
+                                },
+                            },
+                        },
+                    },
+                    true
+                ); // true = redraw
+            });
+
+            container.addEventListener("mouseleave", () => {
+                this._chart.update(
+                    {
+                        exporting: {
+                            buttons: {
+                                contextButton: {
+                                    enabled: false,
+                                },
+                            },
+                        },
+                    },
+                    true
+                );
+            });
         }
 
         /**
