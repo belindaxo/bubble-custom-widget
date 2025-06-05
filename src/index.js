@@ -1,6 +1,7 @@
 /**
  * Module dependencies for Highcharts 3D Funnel chart.
  */
+import { symbol } from 'd3';
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
@@ -275,6 +276,26 @@ var parseMetadata = metadata => {
                 };
             });
 
+            Highcharts.SVGRenderer.prototype.symbols.contextButton = function (x, y, w, h) {
+                const radius = w * 0.06;
+                const spacing = w * 0.22;
+                const centerY = y + h / 2;
+                const startX = x + (w - 2 * spacing) / 2;
+
+                const makeCirclePath = (cx, cy, r) => [
+                    'M', cx - r, cy,
+                    'A', r, r, 0, 1, 0, cx + r, cy,
+                    'A', r, r, 0, 1, 0, cx - r, cy
+                ];
+
+                return [].concat(
+                    makeCirclePath(startX, centerY, radius),
+                    makeCirclePath(startX + spacing, centerY, radius),
+                    makeCirclePath(startX + spacing * 2, centerY, radius)
+                );
+            };
+
+
             const chartOptions = {
                 chart: {
                     type: 'bubble',
@@ -307,6 +328,7 @@ var parseMetadata = metadata => {
                     enabled: true,
                     buttons: {
                         contextButton: {
+                            symbol: 'contextButton',
                             menuItems: ['resetFilters']
                         }
                     },
@@ -597,7 +619,7 @@ var parseMetadata = metadata => {
                 this._selectedPoint.select(false, false);
                 this._selectedPoint = null;
             }
-            
+
             if (event.type === 'select') {
                 if (selectedItem) {
                     const selection = {};
