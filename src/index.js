@@ -438,9 +438,7 @@ var parseMetadata = metadata => {
                                 contextButton: {
                                     enabled: true,
                                     symbol: 'contextButton',
-                                    menuItems: ['resetFilters'],
-                                    x: 8,
-                                    y: -9
+                                    menuItems: ['resetFilters']
                                 },
                             },
                         },
