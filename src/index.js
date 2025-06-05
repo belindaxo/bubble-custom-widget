@@ -317,7 +317,6 @@ var parseMetadata = metadata => {
                 );
             };
 
-
             const chartOptions = {
                 chart: {
                     type: 'bubble',
@@ -427,6 +426,15 @@ var parseMetadata = metadata => {
                 series
             }
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
+        }
+
+        // adjusts the legend's y position to 40 if verticalAlign = 'top' and align = 'right'
+        _adjustLegendPosition() {
+            const legend = this._chart.legend;
+            if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
+                legend.update({ y: 40 }, false);
+                this._chart.redraw();
+            }
         }
 
 
