@@ -426,6 +426,8 @@ var parseMetadata = metadata => {
                 series
             }
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
+
+            this._adjustLegendPosition();
         }
 
         /**
