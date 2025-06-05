@@ -304,7 +304,28 @@ var parseMetadata = metadata => {
                     },
                 },
                 exporting: {
-                    enabled: false
+                    enabled: true,
+                    buttons: {
+                        contextButton: {
+                            menuItems: ['resetFilters']
+                        }
+                    },
+                    menuItemDefinitions: {
+                        resetFilters: {
+                            text: 'Reset Filters',
+                            onclick: () => {
+                                const linkedAnalysis = this.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
+                                if (linkedAnalysis) {
+                                    linkedAnalysis.removeFilters();
+                                    if (this._selectedPoint) {
+                                        this._selectedPoint.select(false, false);
+                                        this._selectedPoint = null;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                 },
                 legend: {
                     enabled: this.showLegend || true,
