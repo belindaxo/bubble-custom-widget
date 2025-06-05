@@ -428,7 +428,9 @@ var parseMetadata = metadata => {
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
         }
 
-        // adjusts the legend's y position to 40 if verticalAlign = 'top' and align = 'right'
+        /**
+         * Adjusts the legend position if it overlaps with the context button.
+         */
         _adjustLegendPosition() {
             const legend = this._chart.legend;
             if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
