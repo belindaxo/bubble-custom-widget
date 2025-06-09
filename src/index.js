@@ -196,6 +196,18 @@ var parseMetadata = metadata => {
             const series = this._processBubbleSeriesData(data, dimensions, measures);
             console.log('Processed Bubble Series Data:', series);
 
+            const xLabel = measures[0].label || 'X-Axis';
+            const yLabel = measures[1].label || 'Y-Axis';
+            const zLabel = measures[2].label || 'Bubble Size';
+            const dimDescription = dimensions[0]?.description || 'Dimension';
+            console.log('xLabel:', xLabel);
+            console.log('yLabel:', yLabel);
+            console.log('zLabel:', zLabel);
+            console.log('dimDescription:', dimDescription);
+
+            const autoTitle = `${xLabel}, ${yLabel}, ${zLabel} per ${dimDescription}`;
+            console.log('Auto Title:', autoTitle);
+
             const validCategoryNames = series.map(s => s.name) || [];
             if (JSON.stringify(this._lastSentCategories) !== JSON.stringify(validCategoryNames)) {
                 this._lastSentCategories = validCategoryNames;
