@@ -329,6 +329,8 @@ var parseMetadata = metadata => {
                 );
             };
 
+            const titleText = this._updateTitle(autoTitle);
+
             const chartOptions = {
                 chart: {
                     type: 'bubble',
@@ -340,7 +342,7 @@ var parseMetadata = metadata => {
                     enabled: false
                 },
                 title: {
-                    text: this.chartTitle || "",
+                    text: titleText,
                     align: this.titleAlignment || "left",
                     style: {
                         fontSize: this.titleSize || "16px",
@@ -473,6 +475,19 @@ var parseMetadata = metadata => {
                     true
                 );
             });
+        }
+
+        /**
+         * 
+         * @param {string} autoTitle - Automatically generated title based on series and dimensions.
+         * @returns {string} The title text.
+         */
+        _updateTitle(autoTitle) {
+            if (!this.chartTitle || this.chartTitle.trim() === '') {
+                return autoTitle;
+            } else {
+                return this.chartTitle;
+            }
         }
 
         /**
