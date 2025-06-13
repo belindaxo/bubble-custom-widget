@@ -729,14 +729,14 @@ var parseMetadata = metadata => {
 
         // SAC scripting methods
 
-        setAxisDimension(dimensionId, axis) {
+        setBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
-            const currentDimension = dataBinding.getDimensions('dimensions')[axis];
+            const currentDimension = dataBinding.getDimensions('dimensions')[0];
             if (currentDimension && currentDimension.id === dimensionId) {
                 return;
             }
             dataBinding.removeDimension(currentDimension);
-            dataBinding.addDimensionToFeed('dimensions', dimensionId, axis);
+            dataBinding.addDimensionToFeed('dimensions', dimensionId);
             this._renderChart();
         }
     }
