@@ -732,10 +732,13 @@ var parseMetadata = metadata => {
         setBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             const currentDimension = dataBinding.getDimensions('dimensions')[0];
+            console.log('Current Dimension:', currentDimension);
             if (currentDimension && currentDimension.id === dimensionId) {
                 return;
             }
-            dataBinding.removeDimension(currentDimension);
+            if (currentDimension) {
+                dataBinding.removeDimension(currentDimension.id);
+            }
             dataBinding.addDimensionToFeed('dimensions', dimensionId);
             this._renderChart();
         }
