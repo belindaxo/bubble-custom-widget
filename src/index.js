@@ -731,33 +731,14 @@ var parseMetadata = metadata => {
 
         setBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
-            const allDimensions = dataBinding.getDimensions('dimensions');
-            const selectedIndex = allDimensions.findIndex(dim => dim.id === dimensionId);
-
-            if (selectedIndex === 0) {
-                // already selected
+            const currentDimension = dataBinding.getDimensions('dimensions')[0];
+            console.log('Current Dimension:', currentDimension);
+            if (currentDimension && currentDimension.id === dimensionId) {
                 return;
             }
-
-            if (selectedIndex > 0) {
-                // Move the selected dimension to the front
-                const selectedDim = allDimensions.splice(selectedIndex, 1)[0];
-                allDimensions.unshift(selectedDim);
-
-                // Remove all dimensions from the feed
-                while (dataBinding.getDimensions('dimensions').length > 0) {
-                    dataBinding.removeDimension(dataBinding.getDimensions('dimensions')[0].id);
-                }
-
-                // Add them back in the new order
-                allDimensions.forEach(dim => {
-                    dataBinding.addDimensionToFeed('dimensions', dim.id);
-                });
-
-                // Render chart
-                this._renderChart();
-            }
-
+            dataBinding.removeDimension(currentDimension.id);
+            dataBinding.addDimensionToFeed('dimensions', dimensionId, 0);
+            this._renderChart();
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
