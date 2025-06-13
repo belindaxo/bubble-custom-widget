@@ -744,10 +744,20 @@ var parseMetadata = metadata => {
                 const selectedDim = allDimensions.splice(selectedIndex, 1)[0];
                 allDimensions.unshift(selectedDim);
 
+                // Remove all dimensions from the feed
+                while (dataBinding.getDimensions('dimensions').length > 0) {
+                    dataBinding.removeDimension(dataBinding.getDimensions('dimensions')[0].id);
+                }
+
+                // Add them back in the new order
+                allDimensions.forEach(dim => {
+                    dataBinding.addDimensionToFeed('dimensions', dim.id);
+                });
+
                 // Render chart
                 this._renderChart();
             }
-            
+
         }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
