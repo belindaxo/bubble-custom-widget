@@ -733,10 +733,10 @@ var parseMetadata = metadata => {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             const currentDimension = dataBinding.getDimensions('dimensions')[0];
             console.log('Current Dimension:', currentDimension);
-            if (currentDimension && currentDimension.id === dimensionId) {
+            if (currentDimension && currentDimension === dimensionId) {
                 return;
             }
-            dataBinding.removeDimension(currentDimension.id);
+            dataBinding.removeDimension(currentDimension);
             dataBinding.addDimensionToFeed('dimensions', dimensionId, 0);
             this._renderChart();
         }
