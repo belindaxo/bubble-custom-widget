@@ -731,13 +731,21 @@ var parseMetadata = metadata => {
 
         setBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
-            const currentDimension = dataBinding.getDimensions('dimensions')[0];
-            console.log('Current Dimension:', currentDimension);
-            if (currentDimension && currentDimension === dimensionId) {
-                return;
+            let dimensions = dataBinding.getDimensions('dimensions');
+            console.log('Before removal, dimensions:', dimensions);
+            while (dimensions.length > 0) {
+                console.log('Attempting to remove dimension:', dimensions[0]);
+                dataBinding.removeDimension(dimensions[0]);
+                dimensions = dataBinding.getDimensions('dimensions');
+                console.log('Dimensions after removal:', dimensions);
             }
-            dataBinding.removeDimension(currentDimension);
+
+            console.log('Adding dimension to feed:', dimensionId);
             dataBinding.addDimensionToFeed('dimensions', dimensionId, 0);
+
+            const afterAdd = dataBinding.getDimensions('dimensions');
+            console.log('After adding dimension, dimensions:', afterAdd);
+            
             this._renderChart();
         }
     }
