@@ -726,6 +726,19 @@ var parseMetadata = metadata => {
                 this._selectedPoint = null;
             }
         }
+
+        // SAC scripting methods
+
+        setAxisDimension(dimensionId, axis) {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            const currentDimension = dataBinding.getDimensions('dimensions')[axis];
+            if (currentDimension && currentDimension.id === dimensionId) {
+                return;
+            }
+            dataBinding.removeDimension(currentDimension);
+            dataBinding.addDimensionToFeed('dimensions', dimensionId, axis);
+            this._renderChart();
+        }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
 })();

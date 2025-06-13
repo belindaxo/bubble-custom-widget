@@ -155,6 +155,21 @@
         }
     },
     "methods": {
+        "setAxisDimension": {
+            "parameters": [
+                {
+                    "name": "dimensionId",
+                    "type": "string",
+                    "description": "The ID of the dimension to set as the axis"
+                },
+                {
+                    "name": "axis",
+                    "type": "integer",
+                    "description": "The axis to set the dimension for (0 for x-axis, 1 for y-axis, 2 for z-axis)"
+                }
+            ],
+            "description": "Sets the specified dimension at the specified axis for the bubble chart."
+        }
 
     },
     "events": {
