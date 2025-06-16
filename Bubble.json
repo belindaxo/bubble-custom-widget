@@ -155,16 +155,7 @@
         }
     },
     "methods": {
-        "setBubbleDimension": {
-            "parameters": [
-                {
-                    "name": "dimensionId",
-                    "type": "string",
-                    "description": "The ID of the dimension"
-                }
-            ],
-            "description": "Sets the specified dimension for the bubble chart."
-        }
+        
     },
     "events": {
 

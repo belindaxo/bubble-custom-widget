@@ -181,8 +181,6 @@ var parseMetadata = metadata => {
 
             const { data, metadata } = dataBinding;
             const { dimensions, measures } = parseMetadata(metadata);
-            console.log('dimensions:', dimensions);
-            console.log('measures:', measures);
 
             if (measures.length < 3) {
                 if (this._chart) {
@@ -194,19 +192,13 @@ var parseMetadata = metadata => {
             }
 
             const series = this._processBubbleSeriesData(data, dimensions, measures);
-            console.log('Processed Bubble Series Data:', series);
 
             const xLabel = measures[0].label || 'X-Axis';
             const yLabel = measures[1].label || 'Y-Axis';
             const zLabel = measures[2].label || 'Bubble Size';
             const dimDescription = dimensions[0]?.description || 'Dimension';
-            console.log('xLabel:', xLabel);
-            console.log('yLabel:', yLabel);
-            console.log('zLabel:', zLabel);
-            console.log('dimDescription:', dimDescription);
 
             const autoTitle = `${xLabel}, ${yLabel}, ${zLabel} per ${dimDescription}`;
-            console.log('Auto Title:', autoTitle);
 
             const validCategoryNames = series.map(s => s.name) || [];
             if (JSON.stringify(this._lastSentCategories) !== JSON.stringify(validCategoryNames)) {
@@ -692,15 +684,11 @@ var parseMetadata = metadata => {
                 console.error('Point is undefined');
                 return;
             }
-            console.log('Point:', point);
 
             const dimension = dimensions[0];
             const dimensionKey = dimension.key;
             const dimensionId = dimension.id;
             const label = point.name || 'No Label';
-            console.log('Dimension Key:', dimensionKey);
-            console.log('Dimension ID:', dimensionId);
-            console.log('Label:', label);
 
             const selectedItem = dataBinding.data.find(
                 (item) => item[dimensionKey].label === label
@@ -725,28 +713,6 @@ var parseMetadata = metadata => {
                 linkedAnalysis.removeFilters();
                 this._selectedPoint = null;
             }
-        }
-
-        // SAC scripting methods
-
-        setBubbleDimension(dimensionId) {
-            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
-            let dimensions = dataBinding.getDimensions('dimensions');
-            console.log('Before removal, dimensions:', dimensions);
-            while (dimensions.length > 0) {
-                console.log('Attempting to remove dimension:', dimensions[0]);
-                dataBinding.removeDimension(dimensions[0]);
-                dimensions = dataBinding.getDimensions('dimensions');
-                console.log('Dimensions after removal:', dimensions);
-            }
-
-            console.log('Adding dimension to feed:', dimensionId);
-            dataBinding.addDimensionToFeed('dimensions', dimensionId, 0);
-
-            const afterAdd = dataBinding.getDimensions('dimensions');
-            console.log('After adding dimension, dimensions:', afterAdd);
-            
-            this._renderChart();
         }
 
     }
