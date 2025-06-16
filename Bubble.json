@@ -164,6 +164,10 @@
                 }
             ],
             "description": "Sets the specified dimension for the bubble chart."
+        },
+        "getBubbleDataBinding": {
+            "returnType": "DataBinding",
+            "description": "Returns the data binding for the bubble chart."
         }
 
     },

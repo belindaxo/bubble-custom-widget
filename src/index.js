@@ -748,6 +748,15 @@ var parseMetadata = metadata => {
             
             this._renderChart();
         }
+
+        getBubbleDataBinding() {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            if (!dataBinding) {
+                console.error('Data binding not found');
+                return null;
+            }
+            return dataBinding;
+        }
     }
     customElements.define('com-sap-sample-bubble', Bubble);
 })();
