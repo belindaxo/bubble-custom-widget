@@ -181,6 +181,9 @@ var parseMetadata = metadata => {
 
             const { data, metadata } = dataBinding;
             const { dimensions, measures } = parseMetadata(metadata);
+            console.log('Bubble Chart Data:', data);
+            console.log('Bubble Chart Dimensions:', dimensions);
+            console.log('Bubble Chart Measures:', measures);
 
             if (measures.length < 3) {
                 if (this._chart) {
@@ -192,6 +195,7 @@ var parseMetadata = metadata => {
             }
 
             const series = this._processBubbleSeriesData(data, dimensions, measures);
+            console.log('Bubble Chart Series:', series);
 
             const xLabel = measures[0].label || 'X-Axis';
             const yLabel = measures[1].label || 'Y-Axis';
@@ -756,7 +760,6 @@ var parseMetadata = metadata => {
 
         addBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
-            console.log('addBubbleDimension - dataBinding:', dataBinding);
             dataBinding.addDimensionToFeed('dimensions', dimensionId);
             console.log('addBubbleDimension - dimensionId:', dimensionId);
             this._renderChart();
