@@ -719,6 +719,8 @@ var parseMetadata = metadata => {
             }
         }
 
+        // SAC Scripting Methods
+
         getBubbleMembers() {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             const members = dataBinding.getMembers('measures');
@@ -754,6 +756,7 @@ var parseMetadata = metadata => {
 
         addBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            console.log('addBubbleDimension - dataBinding:', dataBinding);
             dataBinding.addDimensionToFeed('dimensions', dimensionId);
             console.log('addBubbleDimension - dimensionId:', dimensionId);
             this._renderChart();
