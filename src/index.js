@@ -138,7 +138,6 @@ var parseMetadata = metadata => {
 
                 data.forEach(row => {
                     const label = row[dimensionKey].label || 'No Label';
-                    if (row[dimensionKey].id === '@TotalMember') return;
 
                     if (!grouped[label]) {
                         grouped[label] = [];
@@ -195,7 +194,7 @@ var parseMetadata = metadata => {
                 return;
             }
 
-            const series = this._processBubbleSeriesData(data, dimensions, measures);
+            const series = this._processBubbleSeriesData(data, dimensions, measures).filter(s => s.name !== 'Totals');
             console.log('Bubble Chart Series:', series);
 
             const xLabel = measures[0].label || 'X-Axis';
