@@ -719,6 +719,46 @@ var parseMetadata = metadata => {
             }
         }
 
+        getBubbleMembers() {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            const members = dataBinding.getMembers('measures');
+            return members;
+        }
+
+        getBubbleDimensions() {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            const dimensions = dataBinding.getDimensions('dimensions');
+            return dimensions;
+        }
+
+        removeBubbleMember(memberId) {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            dataBinding.removeMember(memberId);
+            console.log('removeBubbleMember - memberId:', memberId);
+            this._renderChart();
+        }
+
+        removeBubbleDimension(dimensionId) {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            dataBinding.removeDimension(dimensionId);
+            console.log('removeBubbleDimension - dimensionId:', dimensionId);
+            this._renderChart();
+        }
+
+        addBubbleMember(memberId) {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            dataBinding.addMemberToFeed('measures', memberId);
+            console.log('addBubbleMember - memberId:', memberId);
+            this._renderChart();
+        }
+
+        addBubbleDimension(dimensionId) {
+            const dataBinding = this.dataBindings.getDataBinding('dataBinding');
+            dataBinding.addDimensionToFeed('dimensions', dimensionId);
+            console.log('addBubbleDimension - dimensionId:', dimensionId);
+            this._renderChart();
+        }
+
     }
     customElements.define('com-sap-sample-bubble', Bubble);
 })();

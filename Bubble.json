@@ -14,14 +14,14 @@
             "tag": "com-sap-sample-bubble",
             "url": "https://belindaxo.github.io/bubble-custom-widget/dist/bundle.js",
             "integrity": "sha256-M2hxNDjtc2fx6K86ccIzuTV8KnpbcUQTNGxUvrdIw/M=",
-            "ignoreIntegrity": false
+            "ignoreIntegrity": true
         },
         {
             "kind": "styling",
             "tag": "com-sap-sample-bubble-aps",
             "url": "https://belindaxo.github.io/bubble-custom-widget/dist/bundle.js",
             "integrity": "sha256-M2hxNDjtc2fx6K86ccIzuTV8KnpbcUQTNGxUvrdIw/M=",
-            "ignoreIntegrity": false
+            "ignoreIntegrity": true
         }
     ],
     "properties": {
@@ -155,7 +155,54 @@
         }
     },
     "methods": {
-
+        "getBubbleMembers": {
+            "description": "Returns the members of the specified feed of the Bubble chart.",
+            "returnType": "string[]"
+        },
+        "getBubbleDimensions": {
+            "description": "Returns the dimensions of the Bubble chart.",
+            "returnType": "string[]"
+        },
+        "removeBubbleMember": {
+            "description": "Removes a member from the Bubble chart.",
+            "parameters": [
+                {
+                    "name": "memberId",
+                    "type": "string",
+                    "description": "The ID of the member to remove."
+                }
+            ]
+        },
+        "removeBubbleDimension": {
+            "description": "Removes a dimension from the Bubble chart.",
+            "parameters": [
+                {
+                    "name": "dimensionId",
+                    "type": "string",
+                    "description": "The ID of the dimension to remove."
+                }
+            ]
+        },
+        "addBubbleMember": {
+            "description": "Adds the specified member to the Bubble chart.",
+            "parameters": [
+                {
+                    "name": "memberId",
+                    "type": "string",
+                    "description": "The ID of the member to add."
+                }
+            ]
+        },
+        "addBubbleDimension": {
+            "description": "Adds the specified dimension to the Bubble chart.",
+            "parameters": [
+                {
+                    "name": "dimensionId",
+                    "type": "string",
+                    "description": "The ID of the dimension to add."
+                }
+            ]
+        }
     },
     "events": {
 
