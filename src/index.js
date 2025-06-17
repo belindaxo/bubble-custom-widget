@@ -138,6 +138,7 @@ var parseMetadata = metadata => {
 
                 data.forEach(row => {
                     const label = row[dimensionKey].label || 'No Label';
+                    if (row[dimensionKey].id === '@TotalMember') return;
 
                     if (!grouped[label]) {
                         grouped[label] = [];
@@ -741,28 +742,24 @@ var parseMetadata = metadata => {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.removeMember(memberId);
             console.log('removeBubbleMember - memberId:', memberId);
-            this._renderChart();
         }
 
         removeBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.removeDimension(dimensionId);
             console.log('removeBubbleDimension - dimensionId:', dimensionId);
-            this._renderChart();
         }
 
         addBubbleMember(memberId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.addMemberToFeed('measures', memberId);
             console.log('addBubbleMember - memberId:', memberId);
-            this._renderChart();
         }
 
         addBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.addDimensionToFeed('dimensions', dimensionId);
             console.log('addBubbleDimension - dimensionId:', dimensionId);
-            this._renderChart();
         }
 
     }
