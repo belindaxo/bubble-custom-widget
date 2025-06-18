@@ -409,7 +409,7 @@ var parseMetadata = metadata => {
                         dataLabels: {
                             enabled: this.showDataLabels || false,
                             allowOverlap: this.allowOverlap || false,
-                            formatter: this._dataLabelFormatter()
+                            formatter: this._dataLabelFormatter(labelFormat, zScaleFormat),
                         }
                     }
                 },
