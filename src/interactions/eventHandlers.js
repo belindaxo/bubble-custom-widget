@@ -24,7 +24,6 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
     console.log('Selected item:', selectedItem);
 
     const linkedAnalysis = widget.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
-    console.log('Linked Analysis:', linkedAnalysis);
 
     if (widget._selectedPoint && widget._selectedPoint !== point) {
         linkedAnalysis.removeFilters();
@@ -35,7 +34,7 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
     if (event.type === 'select') {
         if (selectedItem) {
             const selection = {};
-            selection[dimensionId] = selectedItem[dimensionKey].label;
+            selection[dimensionKey] = selectedItem[dimensionKey].label;
             console.log('Selection:', selection);
             linkedAnalysis.setFilters(selection);
             widget._selectedPoint = point;
