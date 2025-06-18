@@ -10,7 +10,7 @@ import { processBubbleSeriesData } from './dataProcessor';
 import { xScaleFormat, yScaleFormat, zScaleFormat } from './scaleFormatters.js';
 import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from './labelFormatter.js';
 import { getTooltipFormatter } from './tooltipFormatter.js';
-import { handlePointClick } from './interactionHandlers.js';
+import { handlePointClick, setupContextButtonListeners } from './eventHandlers.js';
 import { updateTitle, adjustLegendPosition } from './chartUtils.js';
 import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchartsSetup.js';
 import { createChartStylesheet } from './styles.js';
@@ -28,20 +28,6 @@ import { createChartStylesheet } from './styles.js';
         constructor() {
             super();
             this.attachShadow({ mode: 'open' });
-
-            // // Create a CSSStyleSheet for the shadow DOM
-            // const sheet = new CSSStyleSheet();
-            // sheet.replaceSync(`
-            //     @font-face {
-            //         font-family: '72';
-            //         src: url('../fonts/72-Regular.woff2') format('woff2');
-            //     }
-            //     #container {
-            //         width: 100%;
-            //         height: 100%;
-            //         font-family: '72';
-            //     }
-            // `);
 
             // Apply the stylesheet to the shadow DOM
             this.shadowRoot.adoptedStyleSheets = [createChartStylesheet()];
@@ -352,42 +338,43 @@ import { createChartStylesheet } from './styles.js';
             adjustLegendPosition(this._chart);
 
             const container = this.shadowRoot.getElementById('container');
+            setupContextButtonListeners(container, this._chart);
 
-            container.addEventListener("mouseenter", () => {
-                if (this._chart) {
-                    this._chart.update(
-                        {
-                            exporting: {
-                                buttons: {
-                                    contextButton: {
-                                        enabled: true,
-                                        symbol: 'contextButton',
-                                        menuItems: ['resetFilters']
-                                    },
-                                },
-                            },
-                        },
-                        true
-                    );
-                }
-            });
+            // container.addEventListener("mouseenter", () => {
+            //     if (this._chart) {
+            //         this._chart.update(
+            //             {
+            //                 exporting: {
+            //                     buttons: {
+            //                         contextButton: {
+            //                             enabled: true,
+            //                             symbol: 'contextButton',
+            //                             menuItems: ['resetFilters']
+            //                         },
+            //                     },
+            //                 },
+            //             },
+            //             true
+            //         );
+            //     }
+            // });
 
-            container.addEventListener("mouseleave", () => {
-                if (this._chart) {
-                    this._chart.update(
-                        {
-                            exporting: {
-                                buttons: {
-                                    contextButton: {
-                                        enabled: false,
-                                    },
-                                },
-                            },
-                        },
-                        true
-                    );
-                }
-            });
+            // container.addEventListener("mouseleave", () => {
+            //     if (this._chart) {
+            //         this._chart.update(
+            //             {
+            //                 exporting: {
+            //                     buttons: {
+            //                         contextButton: {
+            //                             enabled: false,
+            //                         },
+            //                     },
+            //                 },
+            //             },
+            //             true
+            //         );
+            //     }
+            // });
         }
 
         // SAC Scripting Methods

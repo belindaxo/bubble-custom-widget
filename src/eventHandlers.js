@@ -41,3 +41,37 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
         widget._selectedPoint = null;
     }
 }
+
+/**
+ * Sets up mouseenter/mouseleave listeners to toggle the exporting context button.
+ * @param {HTMLElement} container - Chart container element in the shadow DOM.
+ * @param {Highcharts.Chart} chart - Highcharts instance.
+ */
+export function setupContextButtonListeners(container, chart) {
+    if (!container || !chart) return;
+    container.addEventListener("mouseenter", () => {
+        chart.update({
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: true,
+                        symbol: 'contextButton',
+                        menuItems: ['resetFilters']
+                    },
+                },
+            },
+        }, true);
+    });
+
+    container.addEventListener("mouseleave", () => {
+        chart.update({
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                    },
+                },
+            },
+        }, true);
+    });
+}
