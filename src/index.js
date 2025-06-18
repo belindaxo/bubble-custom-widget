@@ -302,7 +302,8 @@ import { createChartStylesheet } from './config/styles.js';
                             allowOverlap: this.allowOverlap || false,
                             formatter: getDataLabelFormatter(labelFormat, zFormat),
                             style: {
-                                fontWeight: 'normal'
+                                fontWeight: 'normal',
+                                color: '#000000',
                             }
                         }
                     }
