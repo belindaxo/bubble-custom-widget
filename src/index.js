@@ -12,6 +12,7 @@ import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from '.
 import { getTooltipFormatter } from './tooltipFormatter.js';
 import { handlePointClick } from './interactionHandlers.js';
 import { updateTitle, adjustLegendPosition } from './chartUtils.js';
+import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchartsSetup.js';
 
 
 (function () {
@@ -170,31 +171,31 @@ import { updateTitle, adjustLegendPosition } from './chartUtils.js';
 
             const onPointClick = (event) => handlePointClick(event, dataBinding, dimensions, this);
 
-            Highcharts.setOptions({
-                lang: {
-                    thousandsSep: ','
-                },
-                colors: ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#006ac7', '#ccced2', '#bf8028', '#00e4a7'],
-                navigation: {
-                    buttonOptions: {
-                        symbolStroke: '#004b8d',  // Outline color
-                        symbolFill: 'transparent', // No fill
-                        symbolStrokeWidth: 1,
-                        // Core button shape settings
-                        height: 32,          // Ensure square for circle
-                        width: 32,
-                        theme: {
-                            r: 16,           // Rounded corners (half width = full circle)
-                            fill: '#f7f7f7', // Background color
-                            stroke: '#ccc',  // Thin outer border
-                            'stroke-width': 0.8,
-                            style: {
-                                cursor: 'pointer'
-                            }
-                        }
-                    }
-                }
-            });
+            // Highcharts.setOptions({
+            //     lang: {
+            //         thousandsSep: ','
+            //     },
+            //     colors: ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#006ac7', '#ccced2', '#bf8028', '#00e4a7'],
+            //     navigation: {
+            //         buttonOptions: {
+            //             symbolStroke: '#004b8d',  // Outline color
+            //             symbolFill: 'transparent', // No fill
+            //             symbolStrokeWidth: 1,
+            //             // Core button shape settings
+            //             height: 32,          // Ensure square for circle
+            //             width: 32,
+            //             theme: {
+            //                 r: 16,           // Rounded corners (half width = full circle)
+            //                 fill: '#f7f7f7', // Background color
+            //                 stroke: '#ccc',  // Thin outer border
+            //                 'stroke-width': 0.8,
+            //                 style: {
+            //                     cursor: 'pointer'
+            //                 }
+            //             }
+            //         }
+            //     }
+            // });
 
             const gradientFillColors = [
                 Highcharts.getOptions().colors[0],
@@ -250,30 +251,32 @@ import { updateTitle, adjustLegendPosition } from './chartUtils.js';
                 };
             });
 
-            Highcharts.SVGRenderer.prototype.symbols.contextButton = function (x, y, w, h) {
-                const radius = w * 0.11;
-                const spacing = w * 0.4;
+            // Highcharts.SVGRenderer.prototype.symbols.contextButton = function (x, y, w, h) {
+            //     const radius = w * 0.11;
+            //     const spacing = w * 0.4;
 
-                const offsetY = 2;    // moves dots slightly down
-                const offsetX = 1;  // moves dots slightly to the right
+            //     const offsetY = 2;    // moves dots slightly down
+            //     const offsetX = 1;  // moves dots slightly to the right
 
-                const centerY = y + h / 2 + offsetY;
-                const startX = x + (w - spacing * 2) / 2 + offsetX;
+            //     const centerY = y + h / 2 + offsetY;
+            //     const startX = x + (w - spacing * 2) / 2 + offsetX;
 
-                const makeCirclePath = (cx, cy, r) => [
-                    'M', cx - r, cy,
-                    'A', r, r, 0, 1, 0, cx + r, cy,
-                    'A', r, r, 0, 1, 0, cx - r, cy
-                ];
+            //     const makeCirclePath = (cx, cy, r) => [
+            //         'M', cx - r, cy,
+            //         'A', r, r, 0, 1, 0, cx + r, cy,
+            //         'A', r, r, 0, 1, 0, cx - r, cy
+            //     ];
 
-                return [].concat(
-                    makeCirclePath(startX, centerY, radius),
-                    makeCirclePath(startX + spacing, centerY, radius),
-                    makeCirclePath(startX + spacing * 2, centerY, radius)
-                );
-            };
+            //     return [].concat(
+            //         makeCirclePath(startX, centerY, radius),
+            //         makeCirclePath(startX + spacing, centerY, radius),
+            //         makeCirclePath(startX + spacing * 2, centerY, radius)
+            //     );
+            // };
 
             const titleText = updateTitle(autoTitle, this.chartTitle);
+            applyHighchartsDefaults();
+            overrideContextButtonSymbol();
 
             const chartOptions = {
                 chart: {
@@ -434,30 +437,6 @@ import { updateTitle, adjustLegendPosition } from './chartUtils.js';
                 }
             });
         }
-
-        // /**
-        //  * Updates the chart title based on the auto-generated title or user-defined title.
-        //  * @param {string} autoTitle - Automatically generated title based on series and dimensions.
-        //  * @returns {string} The title text.
-        //  */
-        // _updateTitle(autoTitle) {
-        //     if (!this.chartTitle || this.chartTitle.trim() === '') {
-        //         return autoTitle;
-        //     } else {
-        //         return this.chartTitle;
-        //     }
-        // }
-
-        // /**
-        //  * Adjusts the legend position if it overlaps with the context button.
-        //  */
-        // _adjustLegendPosition() {
-        //     const legend = this._chart.legend;
-        //     if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
-        //         legend.update({ y: 40 }, false);
-        //         this._chart.redraw();
-        //     }
-        // }
 
         // SAC Scripting Methods
         /**
