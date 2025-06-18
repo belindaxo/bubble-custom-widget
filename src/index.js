@@ -115,6 +115,8 @@ import { createChartStylesheet } from './config/styles.js';
             // Data Extraction and Validation
             const { data, metadata } = dataBinding;
             const { dimensions, measures } = parseMetadata(metadata);
+            console.log('dimensions:', dimensions);
+            console.log('measures:', measures);
 
             if (measures.length < 3) {
                 if (this._chart) {

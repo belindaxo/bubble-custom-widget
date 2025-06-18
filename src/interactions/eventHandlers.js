@@ -24,6 +24,7 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
     console.log('Selected item:', selectedItem);
 
     const linkedAnalysis = widget.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
+    console.log('Linked Analysis:', linkedAnalysis);
 
     if (widget._selectedPoint && widget._selectedPoint !== point) {
         linkedAnalysis.removeFilters();
