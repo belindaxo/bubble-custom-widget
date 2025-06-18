@@ -10,6 +10,7 @@ import { processBubbleSeriesData } from './dataProcessor';
 import { xScaleFormat, yScaleFormat, zScaleFormat } from './scaleFormatters.js';
 import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from './labelFormatter.js';
 import { getTooltipFormatter } from './tooltipFormatter.js';
+import { handlePointClick } from './interactionHandlers.js';
 
 
 (function () {
@@ -107,9 +108,7 @@ import { getTooltipFormatter } from './tooltipFormatter.js';
                 this[name] = newValue;
                 this._renderChart();
             }
-        }
-
-        
+        }    
 
         /**
          * Renders the bubble chart using Highcharts.
@@ -168,7 +167,7 @@ import { getTooltipFormatter } from './tooltipFormatter.js';
 
             const labelFormat = this.labelFormat;
 
-            const handlePointClick = (event) => this._handlePointClick(event, dataBinding, dimensions);
+            const onPointClick = (event) => handlePointClick(event, dataBinding, dimensions, this);
 
             Highcharts.setOptions({
                 lang: {
@@ -345,8 +344,8 @@ import { getTooltipFormatter } from './tooltipFormatter.js';
                         cursor: 'pointer',
                         point: {
                             events: {
-                                select: handlePointClick,
-                                unselect: handlePointClick
+                                select: onPointClick,
+                                unselect: onPointClick
                             }
                         }
                     },
@@ -460,259 +459,47 @@ import { getTooltipFormatter } from './tooltipFormatter.js';
         }
 
         // /**
-        //  * Scales the x-axis value based on the selected scale format (k, m, b, percent).
-        //  * @param {number} value 
-        //  * @returns {Object} An object containing the scaled value and its suffix.
-        //  */
-        // _xScaleFormat(value) {
-        //     let scaledValue = value;
-        //     let valueSuffix = '';
-
-        //     switch (this.xScaleFormat) {
-        //         case 'k':
-        //             scaledValue = value / 1000;
-        //             valueSuffix = 'k';
-        //             break;
-        //         case 'm':
-        //             scaledValue = value / 1000000;
-        //             valueSuffix = 'm';
-        //             break;
-        //         case 'b':
-        //             scaledValue = value / 1000000000;
-        //             valueSuffix = 'b';
-        //             break;
-        //         case 'percent':
-        //             scaledValue = value * 100;
-        //             valueSuffix = '%';
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     return {
-        //         scaledValue: scaledValue.toFixed(this.xDecimalPlaces),
-        //         valueSuffix
-        //     };
-        // }
-
-        // /**
-        //  * Scales the y-axis value based on the selected scale format (k, m, b, percent).
-        //  * @param {number} value 
-        //  * @returns {Object} An object containing the scaled value and its suffix.
-        //  */
-        // _yScaleFormat(value) {
-        //     let scaledValue = value;
-        //     let valueSuffix = '';
-
-        //     switch (this.yScaleFormat) {
-        //         case 'k':
-        //             scaledValue = value / 1000;
-        //             valueSuffix = 'k';
-        //             break;
-        //         case 'm':
-        //             scaledValue = value / 1000000;
-        //             valueSuffix = 'm';
-        //             break;
-        //         case 'b':
-        //             scaledValue = value / 1000000000;
-        //             valueSuffix = 'b';
-        //             break;
-        //         case 'percent':
-        //             scaledValue = value * 100;
-        //             valueSuffix = '%';
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     return {
-        //         scaledValue: scaledValue.toFixed(this.yDecimalPlaces),
-        //         valueSuffix
-        //     };
-        // }
-
-        // /**
-        //  * Scales the z-axis value based on the selected scale format (k, m, b, percent).
-        //  * @param {number} value 
-        //  * @returns {Object} An object containing the scaled value and its suffix.
-        //  */
-        // _zScaleFormat(value) {
-        //     let scaledValue = value;
-        //     let valueSuffix = '';
-
-        //     switch (this.zScaleFormat) {
-        //         case 'k':
-        //             scaledValue = value / 1000;
-        //             valueSuffix = 'k';
-        //             break;
-        //         case 'm':
-        //             scaledValue = value / 1000000;
-        //             valueSuffix = 'm';
-        //             break;
-        //         case 'b':
-        //             scaledValue = value / 1000000000;
-        //             valueSuffix = 'b';
-        //             break;
-        //         case 'percent':
-        //             scaledValue = value * 100;
-        //             valueSuffix = '%';
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     return {
-        //         scaledValue: scaledValue.toFixed(this.zDecimalPlaces),
-        //         valueSuffix
-        //     };
-        // }
-
-        // /**
-        //  * Formats data labels based on the selected label format.
-        //  * @param {string} labelFormat - The format for data labels ('label' or 'value').
-        //  * @param {Function} zScaleFormat - A function that formats z-axis values.
-        //  * @returns {Function} A formatter function for data labels.
-        //  */
-        // _dataLabelFormatter(labelFormat, zScaleFormat) {
-        //     return function () {
-        //         const point = this.point;
-        //         const name = point.name || 'No Name';
-        //         const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
-        //         const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
-        //         if (labelFormat === 'label') {
-        //             return `${name}`;
-        //         } else if (labelFormat === 'value') {
-        //             return `${valueZ}`;
-        //         }
-        //     }
-        // }
-
-        // /**
-        //  * Formats the tooltip content for the bubble chart.
-        //  * @param {Array} measures - Array of measure objects.
+        //  * Event handler for point click events.
+        //  * @param {Object} event - The event object containing the click event.
+        //  * @param {Object} dataBinding - The data binding object containing the data.
         //  * @param {Array} dimensions - Array of dimension objects.
-        //  * @param {Function} xScaleFormat - A function that formats x-axis values.
-        //  * @param {Function} yScaleFormat - A function that formats y-axis values.
-        //  * @param {Function} zScaleFormat - A function that formats z-axis values.
-        //  * @returns {Function} A formatter function for tooltips.
         //  */
-        // _formatTooltip(measures, dimensions, xScaleFormat, yScaleFormat, zScaleFormat) {
-        //     return function () {
-        //         const point = this.point;
-        //         const series = this.series;
+        // _handlePointClick(event, dataBinding, dimensions) {
+        //     const point = event.target;
+        //     if (!point) {
+        //         console.error('Point is undefined');
+        //         return;
+        //     }
 
-        //         const groupLabel = point.name || "point.name";
-        //         const dimensionName = dimensions[0].description || "dimensions[0].description";
-        //         const measureNames = measures.map(m => m.label);
+        //     const dimension = dimensions[0];
+        //     const dimensionKey = dimension.key;
+        //     const dimensionId = dimension.id;
+        //     const label = point.name || 'No Label';
 
-        //         const { scaledValue: scaledValueX, valueSuffix: valueSuffixX } = xScaleFormat(this.x);
-        //         const { scaledValue: scaledValueY, valueSuffix: valueSuffixY } = yScaleFormat(this.y);
-        //         const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
+        //     const selectedItem = dataBinding.data.find(
+        //         (item) => item[dimensionKey].label === label
+        //     );
 
+        //     const linkedAnalysis = this.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
 
-        //         const valueX = Highcharts.numberFormat(scaledValueX, -1, '.', ',');
-        //         const valueY = Highcharts.numberFormat(scaledValueY, -1, '.', ',');
-        //         const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
+        //     if (this._selectedPoint && this._selectedPoint !== point) {
+        //         linkedAnalysis.removeFilters();
+        //         this._selectedPoint.select(false, false);
+        //         this._selectedPoint = null;
+        //     }
 
-        //         const valueWithSuffixX = `${valueX} ${valueSuffixX}`;
-        //         const valueWithSuffixY = `${valueY} ${valueSuffixY}`;
-        //         const valueWithSuffixZ = `${valueZ} ${valueSuffixZ}`;
-
-        //         return `
-        //             <div style="text-align: left; font-family: '72', sans-serif; font-size: 14px;">
-        //                 <div style="font-size: 12px; font-weight: normal; color: #666666;">${dimensionName}</div>
-        //                 <div style="font-size: 18px; font-weight: normal; color: #000000;">${groupLabel}</div>
-        //                 <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;">
-        //                 <table style="width: 100%; font-size: 14px; color: #000000;">
-        //                     <tr>
-        //                         <td style="text-align: left; padding-right: 10px;">${measureNames[0]}:</td>
-        //                         <td style="text-align: right; padding-left: 10px;">${valueWithSuffixX}</td>
-        //                     </tr>
-        //                     <tr>
-        //                         <td style="text-align: left; padding-right: 10px;">${measureNames[1]}:</td>
-        //                         <td style="text-align: right; padding-left: 10px;">${valueWithSuffixY}</td>
-        //                     </tr>
-        //                     <tr>
-        //                         <td style="text-align: left; padding-right: 10px;">${measureNames[2]}:</td>
-        //                         <td style="text-align: right; padding-left: 10px;">${valueWithSuffixZ}</td>
-        //                     </tr>
-        //                 </table>
-        //             </div>
-        //         `;
+        //     if (event.type === 'select') {
+        //         if (selectedItem) {
+        //             const selection = {};
+        //             selection[dimensionId] = selectedItem[dimensionKey].id;
+        //             linkedAnalysis.setFilters(selection);
+        //             this._selectedPoint = point;
+        //         }
+        //     } else if (event.type === 'unselect') {
+        //         linkedAnalysis.removeFilters();
+        //         this._selectedPoint = null;
         //     }
         // }
-
-        // /**
-        //  * 
-        //  * @param {Function} xScaleFormat - A function that formats x-axis values.
-        //  * @returns {Function} A formatter function for x-axis labels.
-        //  */
-        // _formatXLabels(xScaleFormat) {
-        //     return function () {
-        //         const { scaledValue, valueSuffix } = xScaleFormat(this.value);
-        //         if (valueSuffix === '%') {
-        //             return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')}${valueSuffix}`;
-        //         } else {
-        //             return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
-        //         }
-        //     };
-        // }
-
-        // /**
-        //  * 
-        //  * @param {Function} yScaleFormat - A function that formats y-axis values.
-        //  * @returns {Function} A formatter function for y-axis labels.
-        //  */
-        // _formatYLabels(yScaleFormat) {
-        //     return function () {
-        //         const { scaledValue, valueSuffix } = yScaleFormat(this.value);
-        //         if (valueSuffix === '%') {
-        //             return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')}${valueSuffix}`;
-        //         } else {
-        //             return `${Highcharts.numberFormat(scaledValue, -1, '.', ',')} ${valueSuffix}`;
-        //         }
-        //     };
-        // }
-
-        /**
-         * Event handler for point click events.
-         * @param {Object} event - The event object containing the click event.
-         * @param {Object} dataBinding - The data binding object containing the data.
-         * @param {Array} dimensions - Array of dimension objects.
-         */
-        _handlePointClick(event, dataBinding, dimensions) {
-            const point = event.target;
-            if (!point) {
-                console.error('Point is undefined');
-                return;
-            }
-
-            const dimension = dimensions[0];
-            const dimensionKey = dimension.key;
-            const dimensionId = dimension.id;
-            const label = point.name || 'No Label';
-
-            const selectedItem = dataBinding.data.find(
-                (item) => item[dimensionKey].label === label
-            );
-
-            const linkedAnalysis = this.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
-
-            if (this._selectedPoint && this._selectedPoint !== point) {
-                linkedAnalysis.removeFilters();
-                this._selectedPoint.select(false, false);
-                this._selectedPoint = null;
-            }
-
-            if (event.type === 'select') {
-                if (selectedItem) {
-                    const selection = {};
-                    selection[dimensionId] = selectedItem[dimensionKey].id;
-                    linkedAnalysis.setFilters(selection);
-                    this._selectedPoint = point;
-                }
-            } else if (event.type === 'unselect') {
-                linkedAnalysis.removeFilters();
-                this._selectedPoint = null;
-            }
-        }
 
         // SAC Scripting Methods
         /**
