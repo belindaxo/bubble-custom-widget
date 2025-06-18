@@ -103,6 +103,11 @@
             "description": "Whether to allow overlapping of data labels",
             "default": false
         },
+        "labelFormat": {
+            "type": "string",
+            "description": "The format of the data labels (label, size value)",
+            "default": "label"
+        },
         "showLegend": {
             "type": "boolean",
             "description": "Whether to show the legend",

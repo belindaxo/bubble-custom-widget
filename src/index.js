@@ -1,6 +1,7 @@
 /**
  * Module dependencies for Highcharts 3D Funnel chart.
  */
+import { lab } from 'd3';
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
@@ -102,7 +103,7 @@ var parseMetadata = metadata => {
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                            // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor',             // Subtitle properties
                 'axisTitleSize', 'axisTitleColor',                                                                      // Axis title properties
-                'showDataLabels', 'allowOverlap',                                                                       // Data label properties
+                'showDataLabels', 'allowOverlap', 'labelFormat',                                                        // Data label properties
                 'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                             // Legend properties 
                 'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'xDecimalPlaces', 'yDecimalPlaces', 'zDecimalPlaces',   // Number formatting properties
                 'customColors'                                                                                          // Custom colors 
@@ -220,6 +221,7 @@ var parseMetadata = metadata => {
             const xScaleFormat = (value) => this._xScaleFormat(value);
             const yScaleFormat = (value) => this._yScaleFormat(value);
             const zScaleFormat = (value) => this._zScaleFormat(value);
+            const labelFormat = this.labelFormat;
 
             const handlePointClick = (event) => this._handlePointClick(event, dataBinding, dimensions);
 
@@ -509,11 +511,17 @@ var parseMetadata = metadata => {
             }
         }
 
-        _dataLabelFormatter() {
+        _dataLabelFormatter(labelFormat, zScaleFormat) {
             return function () {
                 const point = this.point;
                 const name = point.name || 'No Name';
-                return `${name}`;
+                const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
+                const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
+                if (labelFormat === 'label') {
+                    return `${name}`;
+                } else if (labelFormat === 'value') {
+                    return `${valueZ}`;
+                }
             }
         }
 

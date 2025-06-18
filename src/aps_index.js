@@ -156,6 +156,17 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                     <label for="allowOverlap">Allow overlap</label>
                 </td>
             </tr>
+            <tr>
+                <td>Label Format</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="labelFormat">
+                        <option value="label" selected>Label</option>
+                        <option value="value">Value (size)</option>
+                    </select>
+                </td>
+            </tr>
         </table>
         <legend style="font-weight: bold;font-size: 18px;"> Legend </legend>
         <table>
@@ -320,6 +331,7 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                 axisTitleColor: '#000000',
                 showDataLabels: false,
                 allowOverlap: false,
+                labelFormat: 'label',
                 showLegend: true,
                 legendLayout: 'horizontal',
                 legendAlignment: 'center',
@@ -407,6 +419,7 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
             this._shadowRoot.getElementById('axisTitleColor').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('showDataLabels').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('allowOverlap').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('labelFormat').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('showLegend').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendLayout').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendAlignment').addEventListener('change', this._submit.bind(this));
@@ -465,6 +478,7 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                         axisTitleColor: this.axisTitleColor,
                         showDataLabels: this.showDataLabels,
                         allowOverlap: this.allowOverlap,
+                        labelFormat: this.labelFormat,
                         showLegend: this.showLegend,
                         legendLayout: this.legendLayout,
                         legendAlignment: this.legendAlignment,
@@ -594,6 +608,14 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
 
         get allowOverlap() {
             return this._shadowRoot.getElementById('allowOverlap').checked;
+        }
+
+        set labelFormat(value) {
+            this._shadowRoot.getElementById('labelFormat').value = value;
+        }
+
+        get labelFormat() {
+            return this._shadowRoot.getElementById('labelFormat').value;
         }
 
         set showLegend(value) {
