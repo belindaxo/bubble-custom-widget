@@ -123,6 +123,13 @@ var parseMetadata = metadata => {
             }
         }
 
+        /**
+         * Processes the data for the bubble series based on dimensions and measures.
+         * @param {Array} data - The raw data from the data binding.
+         * @param {Array} dimensions - Array of dimension objects.
+         * @param {Array} measures - Array of measure objects.
+         * @returns {Array} An array of series objects formatted for Highcharts.
+         */
         _processBubbleSeriesData(data, dimensions, measures) {
             const xKey = measures[0].key; // X-axis measure
             const yKey = measures[1].key; // Y-axis measure
@@ -170,6 +177,9 @@ var parseMetadata = metadata => {
             }
         }
 
+        /**
+         * Renders the bubble chart using Highcharts.
+         */
         _renderChart() {
             const dataBinding = this.dataBinding;
             if (!dataBinding || dataBinding.state !== 'success') {
@@ -488,7 +498,7 @@ var parseMetadata = metadata => {
         }
 
         /**
-         * 
+         * Updates the chart title based on the auto-generated title or user-defined title.
          * @param {string} autoTitle - Automatically generated title based on series and dimensions.
          * @returns {string} The title text.
          */
@@ -510,21 +520,6 @@ var parseMetadata = metadata => {
                 this._chart.redraw();
             }
         }
-
-        _dataLabelFormatter(labelFormat, zScaleFormat) {
-            return function () {
-                const point = this.point;
-                const name = point.name || 'No Name';
-                const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
-                const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
-                if (labelFormat === 'label') {
-                    return `${name}`;
-                } else if (labelFormat === 'value') {
-                    return `${valueZ}`;
-                }
-            }
-        }
-
 
         /**
          * Scales the x-axis value based on the selected scale format (k, m, b, percent).
@@ -631,7 +626,35 @@ var parseMetadata = metadata => {
             };
         }
 
+        /**
+         * Formats data labels based on the selected label format.
+         * @param {string} labelFormat - The format for data labels ('label' or 'value').
+         * @param {Function} zScaleFormat - A function that formats z-axis values.
+         * @returns {Function} A formatter function for data labels.
+         */
+        _dataLabelFormatter(labelFormat, zScaleFormat) {
+            return function () {
+                const point = this.point;
+                const name = point.name || 'No Name';
+                const { scaledValue: scaledValueZ, valueSuffix: valueSuffixZ } = zScaleFormat(this.z);
+                const valueZ = Highcharts.numberFormat(scaledValueZ, -1, '.', ',');
+                if (labelFormat === 'label') {
+                    return `${name}`;
+                } else if (labelFormat === 'value') {
+                    return `${valueZ}`;
+                }
+            }
+        }
 
+        /**
+         * Formats the tooltip content for the bubble chart.
+         * @param {Array} measures - Array of measure objects.
+         * @param {Array} dimensions - Array of dimension objects.
+         * @param {Function} xScaleFormat - A function that formats x-axis values.
+         * @param {Function} yScaleFormat - A function that formats y-axis values.
+         * @param {Function} zScaleFormat - A function that formats z-axis values.
+         * @returns {Function} A formatter function for tooltips.
+         */
         _formatTooltip(measures, dimensions, xScaleFormat, yScaleFormat, zScaleFormat) {
             return function () {
                 const point = this.point;
@@ -710,6 +733,12 @@ var parseMetadata = metadata => {
             };
         }
 
+        /**
+         * Event handler for point click events.
+         * @param {Object} event - The event object containing the click event.
+         * @param {Object} dataBinding - The data binding object containing the data.
+         * @param {Array} dimensions - Array of dimension objects.
+         */
         _handlePointClick(event, dataBinding, dimensions) {
             const point = event.target;
             if (!point) {
@@ -748,43 +777,65 @@ var parseMetadata = metadata => {
         }
 
         // SAC Scripting Methods
-
+        /**
+         * Returns the members of the specified feed of the bubble chart.
+         * @returns {Array} An array of bubble members (measures) from the data binding.
+         */
         getBubbleMembers() {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             const members = dataBinding.getMembers('measures');
             return members;
         }
 
+        /**
+         * Returns the dimensions of the bubble chart.
+         * @returns {Array} An array of bubble dimensions from the data binding.
+         */
         getBubbleDimensions() {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             const dimensions = dataBinding.getDimensions('dimensions');
             return dimensions;
         }
 
+        /**
+         * Removes the specified member from the bubble chart.
+         * @param {string} memberId - The ID of the member to remove from the bubble chart.
+         */
         removeBubbleMember(memberId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.removeMember(memberId);
             console.log('removeBubbleMember - memberId:', memberId);
         }
 
+        /**
+         * Removes the specified dimension from the bubble chart.
+         * @param {string} dimensionId - The ID of the dimension to remove from the bubble chart.
+         */
         removeBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.removeDimension(dimensionId);
             console.log('removeBubbleDimension - dimensionId:', dimensionId);
         }
 
+        /**
+         * Adds the specified member to the bubble chart.
+         * @param {string} memberId - The ID of the member to add to the bubble chart.
+         */
         addBubbleMember(memberId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.addMemberToFeed('measures', memberId);
             console.log('addBubbleMember - memberId:', memberId);
         }
 
+        /**
+         * Adds the specified dimension to the bubble chart.
+         * @param {string} dimensionId - The ID of the dimension to add to the bubble chart.
+         */
         addBubbleDimension(dimensionId) {
             const dataBinding = this.dataBindings.getDataBinding('dataBinding');
             dataBinding.addDimensionToFeed('dimensions', dimensionId);
             console.log('addBubbleDimension - dimensionId:', dimensionId);
         }
-
     }
     customElements.define('com-sap-sample-bubble', Bubble);
 })();
