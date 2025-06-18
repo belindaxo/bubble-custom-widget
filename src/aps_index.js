@@ -161,7 +161,7 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
         <table>
             <tr>
                 <td>
-                    <input id="showLegend" type="checkbox" checked>
+                    <input id="showLegend" type="checkbox">
                     <label for="showLegend">Show legend</label>
                 </td>
             </tr>
