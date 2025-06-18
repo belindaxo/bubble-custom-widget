@@ -4,15 +4,15 @@
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
-import { parseMetadata } from './metadataParser';
-import { processBubbleSeriesData } from './dataProcessor';
-import { xScaleFormat, yScaleFormat, zScaleFormat } from './scaleFormatters.js';
-import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from './labelFormatter.js';
-import { getTooltipFormatter } from './tooltipFormatter.js';
-import { handlePointClick } from './eventHandlers.js';
-import { updateTitle, adjustLegendPosition } from './chartUtils.js';
-import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchartsSetup.js';
-import { createChartStylesheet } from './styles.js';
+import { parseMetadata } from './data/metadataParser.js';
+import { processBubbleSeriesData } from './data/dataProcessor.js';
+import { xScaleFormat, yScaleFormat, zScaleFormat } from './formatting/scaleFormatters.js';
+import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from './formatting/labelFormatter.js';
+import { getTooltipFormatter } from './formatting/tooltipFormatter.js';
+import { handlePointClick } from './interactions/eventHandlers.js';
+import { updateTitle, adjustLegendPosition } from './config/chartUtils.js';
+import { applyHighchartsDefaults, overrideContextButtonSymbol } from './config/highchartsSetup.js';
+import { createChartStylesheet } from './config/styles.js';
 
 
 (function () {
