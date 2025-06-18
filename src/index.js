@@ -4,7 +4,6 @@
 import * as Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
-
 import { parseMetadata } from './metadataParser';
 import { processBubbleSeriesData } from './dataProcessor';
 import { xScaleFormat, yScaleFormat, zScaleFormat } from './scaleFormatters.js';
@@ -38,7 +37,6 @@ import { createChartStylesheet } from './styles.js';
             `;
 
             this._lastSentCategories = [];
-
             this._selectedPoint = null;
         }
 
@@ -97,12 +95,13 @@ import { createChartStylesheet } from './styles.js';
                 this[name] = newValue;
                 this._renderChart();
             }
-        }    
+        }
 
         /**
          * Renders the bubble chart using Highcharts.
          */
         _renderChart() {
+            // Initialization
             const dataBinding = this.dataBinding;
             if (!dataBinding || dataBinding.state !== 'success') {
                 if (this._chart) {
@@ -113,11 +112,10 @@ import { createChartStylesheet } from './styles.js';
                 return;
             }
 
+
+            // Data Extraction and Validation
             const { data, metadata } = dataBinding;
             const { dimensions, measures } = parseMetadata(metadata);
-            console.log('Bubble Chart Data:', data);
-            console.log('Bubble Chart Dimensions:', dimensions);
-            console.log('Bubble Chart Measures:', measures);
 
             if (measures.length < 3) {
                 if (this._chart) {
@@ -128,15 +126,10 @@ import { createChartStylesheet } from './styles.js';
                 return;
             }
 
+
+            // Series Data Preparation
             const series = processBubbleSeriesData(data, dimensions, measures).filter(s => s.name !== 'Totals');
             console.log('Bubble Chart Series:', series);
-
-            const xLabel = measures[0].label || 'X-Axis';
-            const yLabel = measures[1].label || 'Y-Axis';
-            const zLabel = measures[2].label || 'Bubble Size';
-            const dimDescription = dimensions[0]?.description || 'Dimension';
-
-            const autoTitle = `${xLabel}, ${yLabel}, ${zLabel} per ${dimDescription}`;
 
             const validCategoryNames = series.map(s => s.name) || [];
             if (JSON.stringify(this._lastSentCategories) !== JSON.stringify(validCategoryNames)) {
@@ -150,14 +143,26 @@ import { createChartStylesheet } from './styles.js';
                 }));
             }
 
+
+            // Formatters and Chart Options
             const xFormat = (value) => xScaleFormat(value, this.xScaleFormat, this.xDecimalPlaces);
             const yFormat = (value) => yScaleFormat(value, this.yScaleFormat, this.yDecimalPlaces);
             const zFormat = (value) => zScaleFormat(value, this.zScaleFormat, this.zDecimalPlaces);
 
-            const labelFormat = this.labelFormat;
-
             const onPointClick = (event) => handlePointClick(event, dataBinding, dimensions, this);
 
+            const labelFormat = this.labelFormat;
+
+            const xLabel = measures[0].label || 'X-Axis';
+            const yLabel = measures[1].label || 'Y-Axis';
+            const zLabel = measures[2].label || 'Bubble Size';
+            const dimDescription = dimensions[0]?.description || 'Dimension';
+
+            const autoTitle = `${xLabel}, ${yLabel}, ${zLabel} per ${dimDescription}`;
+            const titleText = updateTitle(autoTitle, this.chartTitle);
+
+
+            // Series Styling
             const gradientFillColors = [
                 Highcharts.getOptions().colors[0],
                 Highcharts.getOptions().colors[1],
@@ -169,10 +174,8 @@ import { createChartStylesheet } from './styles.js';
                 Highcharts.getOptions().colors[7],
                 Highcharts.getOptions().colors[8]
             ];
-
             const customColors = this.customColors || [];
 
-            // Apply gradient fill colors to series
             series.forEach((s, i) => {
                 const customColor = customColors.find(c => c.category === s.name)?.color;
                 const baseColor = customColor || gradientFillColors[i % gradientFillColors.length];
@@ -212,10 +215,13 @@ import { createChartStylesheet } from './styles.js';
                 };
             });
 
-            const titleText = updateTitle(autoTitle, this.chartTitle);
+
+            // Global Configurations
             applyHighchartsDefaults();
             overrideContextButtonSymbol();
 
+
+            // Chart Options Construction
             const chartOptions = {
                 chart: {
                     type: 'bubble',
@@ -333,48 +339,46 @@ import { createChartStylesheet } from './styles.js';
                 },
                 series
             }
+
+
+            // Chart Instantiation and Adjustments
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
+            const container = this.shadowRoot.getElementById('container');
 
             adjustLegendPosition(this._chart);
 
-            const container = this.shadowRoot.getElementById('container');
 
+            // Container Event Listeners
             container.addEventListener("mouseenter", () => {
                 if (this._chart) {
-                    this._chart.update(
-                        {
-                            exporting: {
-                                buttons: {
-                                    contextButton: {
-                                        enabled: true,
-                                        symbol: 'contextButton',
-                                        menuItems: ['resetFilters']
-                                    },
+                    this._chart.update({
+                        exporting: {
+                            buttons: {
+                                contextButton: {
+                                    enabled: true,
+                                    symbol: 'contextButton',
+                                    menuItems: ['resetFilters']
                                 },
                             },
                         },
-                        true
-                    );
+                    }, true);
                 }
             });
-
             container.addEventListener("mouseleave", () => {
                 if (this._chart) {
-                    this._chart.update(
-                        {
-                            exporting: {
-                                buttons: {
-                                    contextButton: {
-                                        enabled: false,
-                                    },
+                    this._chart.update({
+                        exporting: {
+                            buttons: {
+                                contextButton: {
+                                    enabled: false,
                                 },
                             },
                         },
-                        true
-                    );
+                    }, true);
                 }
             });
         }
+
 
         // SAC Scripting Methods
         /**
