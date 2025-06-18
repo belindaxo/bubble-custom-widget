@@ -7,6 +7,7 @@
  */
 export function handlePointClick(event, dataBinding, dimensions, widget) {
     const point = event.target;
+    console.log('Point clicked:', point);
     if (!point) {
         console.error('Point is undefined');
         return;
@@ -20,6 +21,7 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
     const selectedItem = dataBinding.data.find(
         (item) => item[dimensionKey].label === label
     );
+    console.log('Selected item:', selectedItem);
 
     const linkedAnalysis = widget.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
 
@@ -33,6 +35,7 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
         if (selectedItem) {
             const selection = {};
             selection[dimensionId] = selectedItem[dimensionKey].id;
+            console.log('Selection:', selection);
             linkedAnalysis.setFilters(selection);
             widget._selectedPoint = point;
         }
