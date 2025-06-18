@@ -13,6 +13,7 @@ import { getTooltipFormatter } from './tooltipFormatter.js';
 import { handlePointClick } from './interactionHandlers.js';
 import { updateTitle, adjustLegendPosition } from './chartUtils.js';
 import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchartsSetup.js';
+import { createChartStylesheet } from './styles.js';
 
 
 (function () {
@@ -28,22 +29,22 @@ import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchar
             super();
             this.attachShadow({ mode: 'open' });
 
-            // Create a CSSStyleSheet for the shadow DOM
-            const sheet = new CSSStyleSheet();
-            sheet.replaceSync(`
-                @font-face {
-                    font-family: '72';
-                    src: url('../fonts/72-Regular.woff2') format('woff2');
-                }
-                #container {
-                    width: 100%;
-                    height: 100%;
-                    font-family: '72';
-                }
-            `);
+            // // Create a CSSStyleSheet for the shadow DOM
+            // const sheet = new CSSStyleSheet();
+            // sheet.replaceSync(`
+            //     @font-face {
+            //         font-family: '72';
+            //         src: url('../fonts/72-Regular.woff2') format('woff2');
+            //     }
+            //     #container {
+            //         width: 100%;
+            //         height: 100%;
+            //         font-family: '72';
+            //     }
+            // `);
 
             // Apply the stylesheet to the shadow DOM
-            this.shadowRoot.adoptedStyleSheets = [sheet];
+            this.shadowRoot.adoptedStyleSheets = [createChartStylesheet()];
 
             // Add the container for the chart
             this.shadowRoot.innerHTML = `
@@ -171,32 +172,6 @@ import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchar
 
             const onPointClick = (event) => handlePointClick(event, dataBinding, dimensions, this);
 
-            // Highcharts.setOptions({
-            //     lang: {
-            //         thousandsSep: ','
-            //     },
-            //     colors: ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#006ac7', '#ccced2', '#bf8028', '#00e4a7'],
-            //     navigation: {
-            //         buttonOptions: {
-            //             symbolStroke: '#004b8d',  // Outline color
-            //             symbolFill: 'transparent', // No fill
-            //             symbolStrokeWidth: 1,
-            //             // Core button shape settings
-            //             height: 32,          // Ensure square for circle
-            //             width: 32,
-            //             theme: {
-            //                 r: 16,           // Rounded corners (half width = full circle)
-            //                 fill: '#f7f7f7', // Background color
-            //                 stroke: '#ccc',  // Thin outer border
-            //                 'stroke-width': 0.8,
-            //                 style: {
-            //                     cursor: 'pointer'
-            //                 }
-            //             }
-            //         }
-            //     }
-            // });
-
             const gradientFillColors = [
                 Highcharts.getOptions().colors[0],
                 Highcharts.getOptions().colors[1],
@@ -250,29 +225,6 @@ import { applyHighchartsDefaults, overrideContextButtonSymbol } from './highchar
                     }
                 };
             });
-
-            // Highcharts.SVGRenderer.prototype.symbols.contextButton = function (x, y, w, h) {
-            //     const radius = w * 0.11;
-            //     const spacing = w * 0.4;
-
-            //     const offsetY = 2;    // moves dots slightly down
-            //     const offsetX = 1;  // moves dots slightly to the right
-
-            //     const centerY = y + h / 2 + offsetY;
-            //     const startX = x + (w - spacing * 2) / 2 + offsetX;
-
-            //     const makeCirclePath = (cx, cy, r) => [
-            //         'M', cx - r, cy,
-            //         'A', r, r, 0, 1, 0, cx + r, cy,
-            //         'A', r, r, 0, 1, 0, cx - r, cy
-            //     ];
-
-            //     return [].concat(
-            //         makeCirclePath(startX, centerY, radius),
-            //         makeCirclePath(startX + spacing, centerY, radius),
-            //         makeCirclePath(startX + spacing * 2, centerY, radius)
-            //     );
-            // };
 
             const titleText = updateTitle(autoTitle, this.chartTitle);
             applyHighchartsDefaults();
