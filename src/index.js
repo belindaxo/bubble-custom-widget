@@ -14,7 +14,6 @@ import { updateTitle, adjustLegendPosition } from './config/chartUtils.js';
 import { applyHighchartsDefaults, overrideContextButtonSymbol } from './config/highchartsSetup.js';
 import { createChartStylesheet } from './config/styles.js';
 
-
 (function () {
     /**
      * Custom Web Component for rendering a Bubble Chart in SAP Analytics Cloud.

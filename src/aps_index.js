@@ -347,13 +347,9 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
             this._shadowRoot = this.attachShadow({ mode: 'open' });
             this._shadowRoot.appendChild(template.content.cloneNode(true));
 
-            // Initialize internal state
             this.customColors = [];
-
-            // Dynamic list container for category color controls
             const colorGridContainer = this._shadowRoot.getElementById('categoryColorGrid');
 
-            // Function to render category-based color pickers
             const renderCategoryColorGrid = () => {
                 colorGridContainer.innerHTML = '';
                 this.validCategoryNames.forEach(categoryName => {
@@ -377,7 +373,6 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                     input.addEventListener('change', () => {
                         const existing = this.customColors.find(c => c.category === categoryName);
                         const updatedColor = input.value;
-
                         if (existing) {
                             if (updatedColor === defaultColors[defaultIndex]) {
                                 this.customColors = this.customColors.filter(c => c.category !== categoryName);
@@ -404,7 +399,6 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                 renderCategoryColorGrid(); // Update the UI
                 this._submit(new Event('submit')); // Push to SAC to re-render chart
             });
-
 
             this._shadowRoot.getElementById('form').addEventListener('submit', this._submit.bind(this));
             this._shadowRoot.getElementById('titleSize').addEventListener('change', this._submit.bind(this));
@@ -440,7 +434,7 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                     }
 
                     const element = this._shadowRoot.getElementById(key);
-                    if (!element) continue; // Skip if element not found
+                    if (!element) continue; 
 
                     if (typeof DEFAULTS[key] === 'boolean') {
                         element.checked = DEFAULTS[key];
@@ -448,11 +442,11 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                         element.value = DEFAULTS[key];
                     }
                 }
-                this._submit(new Event('submit')); // Trigger submit event to update properties
+                this._submit(new Event('submit')); 
             });
 
-            this._renderCategoryColorGrid = renderCategoryColorGrid; // Store the function for later use
-            renderCategoryColorGrid(); // Initial render of the category color grid
+            this._renderCategoryColorGrid = renderCategoryColorGrid; 
+            renderCategoryColorGrid(); 
         }
 
         /**
@@ -497,229 +491,200 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
         }
 
         // Getters and setters for each property
-
-        set chartTitle(value) {
-            this._shadowRoot.getElementById('chartTitle').value = value;
-        }
-
         get chartTitle() {
             return this._shadowRoot.getElementById('chartTitle').value;
         }
-
-        set titleSize(value) {
-            this._shadowRoot.getElementById('titleSize').value = value;
+        set chartTitle(value) {
+            this._shadowRoot.getElementById('chartTitle').value = value;
         }
 
         get titleSize() {
             return this._shadowRoot.getElementById('titleSize').value;
         }
-
-        set titleFontStyle(value) {
-            this._shadowRoot.getElementById('titleFontStyle').value = value;
+        set titleSize(value) {
+            this._shadowRoot.getElementById('titleSize').value = value;
         }
 
         get titleFontStyle() {
             return this._shadowRoot.getElementById('titleFontStyle').value;
         }
-
-        set titleAlignment(value) {
-            this._shadowRoot.getElementById('titleAlignment').value = value;
+        set titleFontStyle(value) {
+            this._shadowRoot.getElementById('titleFontStyle').value = value;
         }
 
         get titleAlignment() {
             return this._shadowRoot.getElementById('titleAlignment').value;
         }
-
-        set titleColor(value) {
-            this._shadowRoot.getElementById('titleColor').value = value;
+        set titleAlignment(value) {
+            this._shadowRoot.getElementById('titleAlignment').value = value;
         }
-
+        
         get titleColor() {
             return this._shadowRoot.getElementById('titleColor').value;
         }
-
-        set chartSubtitle(value) {
-            this._shadowRoot.getElementById('chartSubtitle').value = value;
+        set titleColor(value) {
+            this._shadowRoot.getElementById('titleColor').value = value;
         }
 
         get chartSubtitle() {
             return this._shadowRoot.getElementById('chartSubtitle').value;
         }
-
-        set subtitleSize(value) {
-            this._shadowRoot.getElementById('subtitleSize').value = value;
+        set chartSubtitle(value) {
+            this._shadowRoot.getElementById('chartSubtitle').value = value;
         }
 
         get subtitleSize() {
             return this._shadowRoot.getElementById('subtitleSize').value;
         }
-
-        set subtitleFontStyle(value) {
-            this._shadowRoot.getElementById('subtitleFontStyle').value = value;
+        set subtitleSize(value) {
+            this._shadowRoot.getElementById('subtitleSize').value = value;
         }
 
         get subtitleFontStyle() {
             return this._shadowRoot.getElementById('subtitleFontStyle').value;
         }
-
-        set subtitleAlignment(value) {
-            this._shadowRoot.getElementById('subtitleAlignment').value = value;
+        set subtitleFontStyle(value) {
+            this._shadowRoot.getElementById('subtitleFontStyle').value = value;
         }
 
         get subtitleAlignment() {
             return this._shadowRoot.getElementById('subtitleAlignment').value;
         }
-
-        set subtitleColor(value) {
-            this._shadowRoot.getElementById('subtitleColor').value = value;
+        set subtitleAlignment(value) {
+            this._shadowRoot.getElementById('subtitleAlignment').value = value;
         }
 
         get subtitleColor() {
             return this._shadowRoot.getElementById('subtitleColor').value;
         }
-
-        set axisTitleSize(value) {
-            this._shadowRoot.getElementById('axisTitleSize').value = value;
+        set subtitleColor(value) {
+            this._shadowRoot.getElementById('subtitleColor').value = value;
         }
 
         get axisTitleSize() {
             return this._shadowRoot.getElementById('axisTitleSize').value;
         }
-
-        set axisTitleColor(value) {
-            this._shadowRoot.getElementById('axisTitleColor').value = value;
+        set axisTitleSize(value) {
+            this._shadowRoot.getElementById('axisTitleSize').value = value;
         }
 
         get axisTitleColor() {
             return this._shadowRoot.getElementById('axisTitleColor').value;
         }
-
-        set showDataLabels(value) {
-            this._shadowRoot.getElementById('showDataLabels').checked = value;
+        set axisTitleColor(value) {
+            this._shadowRoot.getElementById('axisTitleColor').value = value;
         }
 
         get showDataLabels() {
             return this._shadowRoot.getElementById('showDataLabels').checked;
         }
-
-        set allowOverlap(value) {
-            this._shadowRoot.getElementById('allowOverlap').checked = value;
+        set showDataLabels(value) {
+            this._shadowRoot.getElementById('showDataLabels').checked = value;
         }
 
         get allowOverlap() {
             return this._shadowRoot.getElementById('allowOverlap').checked;
         }
-
-        set labelFormat(value) {
-            this._shadowRoot.getElementById('labelFormat').value = value;
+        set allowOverlap(value) {
+            this._shadowRoot.getElementById('allowOverlap').checked = value;
         }
 
         get labelFormat() {
             return this._shadowRoot.getElementById('labelFormat').value;
         }
-
-        set showLegend(value) {
-            this._shadowRoot.getElementById('showLegend').checked = value;
+        set labelFormat(value) {
+            this._shadowRoot.getElementById('labelFormat').value = value;
         }
 
         get showLegend() {
             return this._shadowRoot.getElementById('showLegend').checked;
         }
-
-        set legendLayout(value) {
-            this._shadowRoot.getElementById('legendLayout').value = value;
+        set showLegend(value) {
+            this._shadowRoot.getElementById('showLegend').checked = value;
         }
 
         get legendLayout() {
             return this._shadowRoot.getElementById('legendLayout').value;
         }
-
-        set legendAlignment(value) {
-            this._shadowRoot.getElementById('legendAlignment').value = value;
+        set legendLayout(value) {
+            this._shadowRoot.getElementById('legendLayout').value = value;
         }
 
         get legendAlignment() {
             return this._shadowRoot.getElementById('legendAlignment').value;
         }
-
-        set legendVerticalAlignment(value) {
-            this._shadowRoot.getElementById('legendVerticalAlignment').value = value;
+        set legendAlignment(value) {
+            this._shadowRoot.getElementById('legendAlignment').value = value;
         }
 
         get legendVerticalAlignment() {
             return this._shadowRoot.getElementById('legendVerticalAlignment').value;
         }
-
-        set xScaleFormat(value) {
-            this._shadowRoot.getElementById('xScaleFormat').value = value;
+        set legendVerticalAlignment(value) {
+            this._shadowRoot.getElementById('legendVerticalAlignment').value = value;
         }
 
         get xScaleFormat() {
             return this._shadowRoot.getElementById('xScaleFormat').value;
         }
-
-        set yScaleFormat(value) {
-            this._shadowRoot.getElementById('yScaleFormat').value = value;
+        set xScaleFormat(value) {
+            this._shadowRoot.getElementById('xScaleFormat').value = value;
         }
 
         get yScaleFormat() {
             return this._shadowRoot.getElementById('yScaleFormat').value;
         }
-
-        set zScaleFormat(value) {
-            this._shadowRoot.getElementById('zScaleFormat').value = value;
+        set yScaleFormat(value) {
+            this._shadowRoot.getElementById('yScaleFormat').value = value;
         }
 
         get zScaleFormat() {
             return this._shadowRoot.getElementById('zScaleFormat').value;
         }
-
-        set xDecimalPlaces(value) {
-            this._shadowRoot.getElementById('xDecimalPlaces').value = value;
+        set zScaleFormat(value) {
+            this._shadowRoot.getElementById('zScaleFormat').value = value;
         }
 
         get xDecimalPlaces() {
             return this._shadowRoot.getElementById('xDecimalPlaces').value;
         }
-
-        set yDecimalPlaces(value) {
-            this._shadowRoot.getElementById('yDecimalPlaces').value = value;
+        set xDecimalPlaces(value) {
+            this._shadowRoot.getElementById('xDecimalPlaces').value = value;
         }
 
         get yDecimalPlaces() {
             return this._shadowRoot.getElementById('yDecimalPlaces').value;
         }
-
-        set zDecimalPlaces(value) {
-            this._shadowRoot.getElementById('zDecimalPlaces').value = value;
+        set yDecimalPlaces(value) {
+            this._shadowRoot.getElementById('yDecimalPlaces').value = value;
         }
 
         get zDecimalPlaces() {
             return this._shadowRoot.getElementById('zDecimalPlaces').value;
         }
+        set zDecimalPlaces(value) {
+            this._shadowRoot.getElementById('zDecimalPlaces').value = value;
+        }
 
         get customColors() {
             return this._customColors || [];
         }
-
         set customColors(value) {
             this._customColors = value || [];
             if (this._renderCategoryColorGrid && this._validCategoryNames) {
-                this._renderCategoryColorGrid(); // rebuild UI on update
-            }
-        }
-
-        set validCategoryNames(value) {
-            this._validCategoryNames = value || [];
-            if (this._renderCategoryColorGrid && this._customColors) {
-                this._renderCategoryColorGrid(); // rebuild UI on update
+                this._renderCategoryColorGrid(); 
             }
         }
 
         get validCategoryNames() {
             return this._validCategoryNames || [];
         }
-
+        set validCategoryNames(value) {
+            this._validCategoryNames = value || [];
+            if (this._renderCategoryColorGrid && this._customColors) {
+                this._renderCategoryColorGrid(); 
+            }
+        }
     }
     customElements.define('com-sap-sample-bubble-aps', BubbleAps);
 })();
