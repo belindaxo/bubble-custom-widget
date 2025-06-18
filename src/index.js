@@ -11,6 +11,7 @@ import { xScaleFormat, yScaleFormat, zScaleFormat } from './scaleFormatters.js';
 import { getDataLabelFormatter, getXLabelFormatter, getYLabelFormatter } from './labelFormatter.js';
 import { getTooltipFormatter } from './tooltipFormatter.js';
 import { handlePointClick } from './interactionHandlers.js';
+import { updateTitle, adjustLegendPosition } from './chartUtils.js';
 
 
 (function () {
@@ -272,7 +273,7 @@ import { handlePointClick } from './interactionHandlers.js';
                 );
             };
 
-            const titleText = this._updateTitle(autoTitle);
+            const titleText = updateTitle(autoTitle, this.chartTitle);
 
             const chartOptions = {
                 chart: {
@@ -393,7 +394,7 @@ import { handlePointClick } from './interactionHandlers.js';
             }
             this._chart = Highcharts.chart(this.shadowRoot.getElementById('container'), chartOptions);
 
-            this._adjustLegendPosition();
+            adjustLegendPosition(this._chart);
 
             const container = this.shadowRoot.getElementById('container');
 
@@ -434,70 +435,27 @@ import { handlePointClick } from './interactionHandlers.js';
             });
         }
 
-        /**
-         * Updates the chart title based on the auto-generated title or user-defined title.
-         * @param {string} autoTitle - Automatically generated title based on series and dimensions.
-         * @returns {string} The title text.
-         */
-        _updateTitle(autoTitle) {
-            if (!this.chartTitle || this.chartTitle.trim() === '') {
-                return autoTitle;
-            } else {
-                return this.chartTitle;
-            }
-        }
-
-        /**
-         * Adjusts the legend position if it overlaps with the context button.
-         */
-        _adjustLegendPosition() {
-            const legend = this._chart.legend;
-            if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
-                legend.update({ y: 40 }, false);
-                this._chart.redraw();
-            }
-        }
+        // /**
+        //  * Updates the chart title based on the auto-generated title or user-defined title.
+        //  * @param {string} autoTitle - Automatically generated title based on series and dimensions.
+        //  * @returns {string} The title text.
+        //  */
+        // _updateTitle(autoTitle) {
+        //     if (!this.chartTitle || this.chartTitle.trim() === '') {
+        //         return autoTitle;
+        //     } else {
+        //         return this.chartTitle;
+        //     }
+        // }
 
         // /**
-        //  * Event handler for point click events.
-        //  * @param {Object} event - The event object containing the click event.
-        //  * @param {Object} dataBinding - The data binding object containing the data.
-        //  * @param {Array} dimensions - Array of dimension objects.
+        //  * Adjusts the legend position if it overlaps with the context button.
         //  */
-        // _handlePointClick(event, dataBinding, dimensions) {
-        //     const point = event.target;
-        //     if (!point) {
-        //         console.error('Point is undefined');
-        //         return;
-        //     }
-
-        //     const dimension = dimensions[0];
-        //     const dimensionKey = dimension.key;
-        //     const dimensionId = dimension.id;
-        //     const label = point.name || 'No Label';
-
-        //     const selectedItem = dataBinding.data.find(
-        //         (item) => item[dimensionKey].label === label
-        //     );
-
-        //     const linkedAnalysis = this.dataBindings.getDataBinding('dataBinding').getLinkedAnalysis();
-
-        //     if (this._selectedPoint && this._selectedPoint !== point) {
-        //         linkedAnalysis.removeFilters();
-        //         this._selectedPoint.select(false, false);
-        //         this._selectedPoint = null;
-        //     }
-
-        //     if (event.type === 'select') {
-        //         if (selectedItem) {
-        //             const selection = {};
-        //             selection[dimensionId] = selectedItem[dimensionKey].id;
-        //             linkedAnalysis.setFilters(selection);
-        //             this._selectedPoint = point;
-        //         }
-        //     } else if (event.type === 'unselect') {
-        //         linkedAnalysis.removeFilters();
-        //         this._selectedPoint = null;
+        // _adjustLegendPosition() {
+        //     const legend = this._chart.legend;
+        //     if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
+        //         legend.update({ y: 40 }, false);
+        //         this._chart.redraw();
         //     }
         // }
 
