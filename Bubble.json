@@ -93,6 +93,16 @@
             "description": "The color of the axis titles",
             "default": "#000000"
         },
+        "showDataLabels": {
+            "type": "boolean",
+            "description": "Whether to show data labels on the bubbles",
+            "default": false
+        },
+        "allowOverlap": {
+            "type": "boolean",
+            "description": "Whether to allow overlapping of data labels",
+            "default": false
+        },
         "showLegend": {
             "type": "boolean",
             "description": "Whether to show the legend",

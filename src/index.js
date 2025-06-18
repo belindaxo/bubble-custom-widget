@@ -102,9 +102,10 @@ var parseMetadata = metadata => {
                 'chartTitle', 'titleSize', 'titleFontStyle', 'titleAlignment', 'titleColor',                            // Title properties
                 'chartSubtitle', 'subtitleSize', 'subtitleFontStyle', 'subtitleAlignment', 'subtitleColor',             // Subtitle properties
                 'axisTitleSize', 'axisTitleColor',                                                                      // Axis title properties
+                'showDataLabels', 'allowOverlap',                                                                       // Data label properties
                 'showLegend', 'legendLayout', 'legendAlignment', 'legendVerticalAlignment',                             // Legend properties 
                 'xScaleFormat', 'yScaleFormat', 'zScaleFormat', 'xDecimalPlaces', 'yDecimalPlaces', 'zDecimalPlaces',   // Number formatting properties
-                'customColors'
+                'customColors'                                                                                          // Custom colors 
             ];
         }
 
@@ -401,6 +402,13 @@ var parseMetadata = metadata => {
                                 unselect: handlePointClick
                             }
                         }
+                    },
+                    bubble: {
+                        dataLabels: {
+                            enabled: this.showDataLabels || false,
+                            allowOverlap: this.allowOverlap || false,
+                            formatter: this._dataLabelFormatter()
+                        }
                     }
                 },
                 yAxis: {
@@ -498,6 +506,14 @@ var parseMetadata = metadata => {
             if (legend && legend.options.verticalAlign === 'top' && legend.options.align === 'right') {
                 legend.update({ y: 40 }, false);
                 this._chart.redraw();
+            }
+        }
+
+        _dataLabelFormatter() {
+            return function () {
+                const point = this.point;
+                const name = point.name || 'No Name';
+                return `${name}`;
             }
         }
 

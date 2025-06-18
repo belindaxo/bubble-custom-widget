@@ -142,6 +142,21 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                 </table>
             </tr>
         </table>
+        <legend style="font-weight: bold; font-size: 18px">Data Labels</legend>
+        <table>
+            <tr>
+                <td>
+                    <input id="showDataLabels" type="checkbox" checked />
+                    <label for="showDataLabels">Show data labels</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="allowOverlap" type="checkbox" />
+                    <label for="allowOverlap">Allow overlap</label>
+                </td>
+            </tr>
+        </table>
         <legend style="font-weight: bold;font-size: 18px;"> Legend </legend>
         <table>
             <tr>
@@ -303,6 +318,8 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                 subtitleColor: '#000000',
                 axisTitleSize: '14px',
                 axisTitleColor: '#000000',
+                showDataLabels: false,
+                allowOverlap: false,
                 showLegend: true,
                 legendLayout: 'horizontal',
                 legendAlignment: 'center',
@@ -388,6 +405,8 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
             this._shadowRoot.getElementById('subtitleColor').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('axisTitleSize').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('axisTitleColor').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('showDataLabels').addEventListener('change', this._submit.bind(this));
+            this._shadowRoot.getElementById('allowOverlap').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('showLegend').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendLayout').addEventListener('change', this._submit.bind(this));
             this._shadowRoot.getElementById('legendAlignment').addEventListener('change', this._submit.bind(this));
@@ -444,6 +463,8 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
                         subtitleColor: this.subtitleColor,
                         axisTitleSize: this.axisTitleSize,
                         axisTitleColor: this.axisTitleColor,
+                        showDataLabels: this.showDataLabels,
+                        allowOverlap: this.allowOverlap,
                         showLegend: this.showLegend,
                         legendLayout: this.legendLayout,
                         legendAlignment: this.legendAlignment,
@@ -557,6 +578,22 @@ const defaultColors = ['#004b8d', '#939598', '#faa834', '#00aa7e', '#47a5dc', '#
 
         get axisTitleColor() {
             return this._shadowRoot.getElementById('axisTitleColor').value;
+        }
+
+        set showDataLabels(value) {
+            this._shadowRoot.getElementById('showDataLabels').checked = value;
+        }
+
+        get showDataLabels() {
+            return this._shadowRoot.getElementById('showDataLabels').checked;
+        }
+
+        set allowOverlap(value) {
+            this._shadowRoot.getElementById('allowOverlap').checked = value;
+        }
+
+        get allowOverlap() {
+            return this._shadowRoot.getElementById('allowOverlap').checked;
         }
 
         set showLegend(value) {
