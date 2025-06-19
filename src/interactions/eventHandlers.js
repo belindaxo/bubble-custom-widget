@@ -36,15 +36,11 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
 
     if (event.type === 'select') {
         if (selectedItem) {
-            let memberId = selectedItem[dimensionKey].id;
-            if (memberId === undefined || memberId === null) {
-                memberId = '#';
-            }
             const selection = {};
-            selection[dimensionId] = memberId;
+            selection[dimensionId] = selectedItem[dimensionKey].id;
             console.log('Selection:', selection);
             console.log('selection[dimensionId]:', selection[dimensionId]);
-            console.log('memberId:', memberId);
+            console.log('selectedItem[dimensionKey].id', selectedItem[dimensionKey].id);
             linkedAnalysis.setFilters(selection);
             widget._selectedPoint = point;
         }
