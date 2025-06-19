@@ -37,12 +37,11 @@ export function handlePointClick(event, dataBinding, dimensions, widget) {
     if (event.type === 'select') {
         if (selectedItem) {
             const selection = {};
-            if (selection[dimensionId] === null || selectedItem[dimensionKey].id === null) {
-                // populate selection id with '#'
-                selection[dimensionId] = '#';
-                selectedItem[dimensionKey].id = '#';
-            }
             selection[dimensionId] = selectedItem[dimensionKey].id;
+            // if selection[dimensionId] is undefined or selectedItem[dimensionKey].id is undefined, set id to '#'
+            if (selection[dimensionId] === undefined || selectedItem[dimensionKey].id === undefined) {
+                selection[dimensionId] = '#';
+            }
             console.log('Selection:', selection);
             console.log('selection[dimensionId]:', selection[dimensionId]);
             console.log('selectedItem[dimensionKey].id', selectedItem[dimensionKey].id);
