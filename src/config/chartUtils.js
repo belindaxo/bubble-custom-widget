@@ -5,7 +5,7 @@
  * @returns {string} The title text.
  */
 export function updateTitle(autoTitle, chartTitle) {
-    if (!chartTitle || chartTitle.trim() === '') {
+    if (!chartTitle || chartTitle === '') {
         return autoTitle;
     } else {
         return chartTitle;
