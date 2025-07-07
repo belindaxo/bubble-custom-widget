@@ -13,15 +13,15 @@
             "kind": "main",
             "tag": "com-sap-sample-bubble",
             "url": "https://belindaxo.github.io/bubble-custom-widget/dist/bundle.js",
-            "integrity": "sha256-M2hxNDjtc2fx6K86ccIzuTV8KnpbcUQTNGxUvrdIw/M=",
-            "ignoreIntegrity": true
+            "integrity": "sha256-tI/y7S9k91ZcfToijOwqcM7gqz6UtFRFjwtCUcVf9dA=",
+            "ignoreIntegrity": false
         },
         {
             "kind": "styling",
             "tag": "com-sap-sample-bubble-aps",
             "url": "https://belindaxo.github.io/bubble-custom-widget/dist/bundle.js",
-            "integrity": "sha256-M2hxNDjtc2fx6K86ccIzuTV8KnpbcUQTNGxUvrdIw/M=",
-            "ignoreIntegrity": true
+            "integrity": "sha256-tI/y7S9k91ZcfToijOwqcM7gqz6UtFRFjwtCUcVf9dA=",
+            "ignoreIntegrity": false
         }
     ],
     "properties": {
